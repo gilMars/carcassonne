@@ -37,7 +37,8 @@ public class JogoTest {
 
 		ocorreExcecaoJogo(() -> jogo.iniciarPartida(PRETO, AMARELO, PRETO),
 				"Não pode haver repetição de cores na sequência de jogadores");
-
+		
+		mockarTiles(tiles, t45);
 		jogo.iniciarPartida(AZUL, VERDE);
 		ocorreExcecaoJogo(() -> jogo.iniciarPartida(AMARELO, VERMELHO),
 				"Não pode iniciar uma partida enquanto a partida anterior não for finalizada");
