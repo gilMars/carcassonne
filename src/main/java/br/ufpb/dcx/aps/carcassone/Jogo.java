@@ -52,17 +52,24 @@ public class Jogo {
 		sequencia+=jogadores[i].toString()+", ";
 	}
 	sequencia+=jogadores[jogadores.length-1];
-	
+	if(status.equals("Fim")){
+		jogadores[0] = null;
+		
+	}
+		
 	String relatorio = "Status: " + status + "\nJogadores: " + sequencia + "\nTabuleiro: "
 	+ tabuleiro+ "\nJogador da rodada: " + jogadores[0] + "\nPróximo tile: "
 			+ proximoTile;
+	
 		return relatorio;
 	}
 	
 	
 	
-	public Jogo girarTile() {		
-		proximoTile.girar();
+	public Jogo girarTile() {
+		if(proximoTile != null){
+			proximoTile.girar();			
+		}
 		return this;
 	}
 
@@ -71,23 +78,29 @@ public class Jogo {
 			throw new ExcecaoJogo("O tile inicial não pode ser posicionado antes de iniciar a partida");
 		}
 		tabuleiro.adicionarPrimeiroTile(proximoTile);
+		proximoTile = null;
+		status = "Tile";
 		return this;
 	}
 
 	private void pegarProximoTile() {
-		//Tile[] retorno = {t01,t02,t03,t04,t05,t06};
-		//Mockito.when(tiles.pegar()).thenReturn(t01);
 		proximoTile = tiles.pegar();
-		proximoTile.reset();
+		proximoTile.reset();	
 	}
 
 	public Jogo finalizarRodada() {
-		pegarProximoTile();
-		status = "Fim";
+		if(status.equals("Início")){
+			pegarProximoTile();
+			
+		}else{
+			proximoTile = null;
+			status = "Fim";
+		}
 		return this;
 	}
 
 	public Jogo posicionarTile(Tile tileReferencia, Lado ladoTileReferencia) {
+		status = "Tile";
 		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, proximoTile);
 		return this;		
 	}

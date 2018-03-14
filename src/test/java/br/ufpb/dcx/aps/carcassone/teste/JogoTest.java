@@ -265,6 +265,7 @@ public class JogoTest {
 		if (finaliza) {
 			jogo.finalizarRodada();
 		}
+		
 	}
 
 	private void rodada(int girosAntesPosicionar, Tile tileReferencia, Lado ladoTileReferencia,
