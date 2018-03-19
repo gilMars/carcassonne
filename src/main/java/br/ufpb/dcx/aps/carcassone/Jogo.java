@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 public class Jogo {
 	
 	private Tile proximoTile;
+	private Tile tileAtual;
 	static int indice = 0;
 	private BolsaDeTiles tiles;
 	private TabuleiroFlexivel tabuleiro = new TabuleiroFlexivel("");
@@ -34,12 +35,19 @@ public class Jogo {
 				}
 			}
 		}
+
 		jogadores = sequencia;
-		pegarProximoTile();
+		pegarTileInicial();
 		iniciado = true;
 		return this;
 	}
 
+	public void pegarTileInicial() {
+		tileAtual = tiles.pegar();
+		proximoTile = tileAtual;
+		tileAtual.reset();		
+	}
+	
 	public Jogo iniciarPartida() {
 		throw new ExcecaoJogo("Cada partida deve ter uma sequência de pelo menos dois jogadores");
 	}
@@ -67,8 +75,8 @@ public class Jogo {
 	
 	
 	public Jogo girarTile() {
-		if(proximoTile != null){
-			proximoTile.girar();			
+		if(tileAtual != null){
+			tileAtual.girar();			
 		}
 		return this;
 	}
@@ -77,15 +85,20 @@ public class Jogo {
 		if (iniciado == false) {
 			throw new ExcecaoJogo("O tile inicial não pode ser posicionado antes de iniciar a partida");
 		}
-		tabuleiro.adicionarPrimeiroTile(proximoTile);
-		proximoTile = null;
+		tabuleiro.adicionarPrimeiroTile(tileAtual);
+		pegarProximoTile();
 		status = "Tile";
 		return this;
 	}
 
 	private void pegarProximoTile() {
+		
+		tileAtual = proximoTile;
 		proximoTile = tiles.pegar();
-		proximoTile.reset();	
+		if(proximoTile!=null)proximoTile.reset();
+		
+		//proximoTile = tiles.pegar();
+		//proximoTile.reset();
 	}
 
 	public Jogo finalizarRodada() {
