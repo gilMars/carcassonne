@@ -216,7 +216,9 @@ public class TabuleiroFlexivel {
 			for (int i = 0; i < tabuleiro.length; i++) {
 				s += (tabuleiro[i][j] == null) ? espacoVazio : tabuleiro[i][j].getTile();
 			}
+			s += "\n";
 		}
+		s = s.substring(0,s.length()-1);
 		}
 		return s;
 	}
