@@ -156,10 +156,14 @@ public class TabuleiroFlexivel {
 
 	private void verificarTipoLado(Tile tileNovo, Tile tileReferencia, String ladoReferencia,
 			TipoLado tipoLadoReferencia, String ladoNovo, TipoLado tipoLadoNovo) {
+		ladoReferencia = ladoReferencia.substring(0, 1) + ladoReferencia.substring(1).toLowerCase();
+		String sTipoLadoReferencia = tipoLadoReferencia.toString().substring(0, 1) + tipoLadoReferencia.toString().substring(1).toLowerCase();
+		ladoNovo = ladoNovo.substring(0, 1) + ladoNovo.substring(1).toLowerCase();
+		String sTipoLadoNovo = tipoLadoNovo.toString().substring(0, 1) + tipoLadoNovo.toString().substring(1).toLowerCase();
 		if (!tipoLadoReferencia.equals(tipoLadoNovo)) {
 			throw new ExcecaoJogo("O lado " + ladoReferencia + " do tile " + tileReferencia.getId() + " ("
-					+ tipoLadoReferencia.getAbreviacao() + ") é diferente do lado " + ladoNovo + " ("
-					+ tipoLadoNovo.getAbreviacao() + ") do tile " + tileNovo.getId());
+					+ sTipoLadoReferencia + ") é incompatível com o lado " + ladoNovo + " do tile " + tileNovo.getId()+ " ("
+					+ sTipoLadoNovo + ")");
 		}
 	}
 

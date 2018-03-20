@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 public class Jogo {
 	
-	//private Tile proximoTile;
 	private Tile tileAtual;
 	static int indice = 0;
 	private BolsaDeTiles tiles;
@@ -36,7 +35,6 @@ public class Jogo {
 		}
 
 		jogadores = sequencia;
-		//pegarTileInicial();
 		pegarProximoTile();
 		tileAtual = tilesPego.getLast();
 		iniciado = true;
@@ -44,13 +42,6 @@ public class Jogo {
 		return this;
 	}
 	
-/*
-	public void pegarTileInicial() {
-		tileAtual = tiles.pegar();
-		proximoTile = tileAtual;
-		tileAtual.reset();
-	}
-*/	
 	public Jogo iniciarPartida() {
 		throw new ExcecaoJogo("Cada partida deve ter uma sequência de pelo menos dois jogadores");
 	}
@@ -65,7 +56,6 @@ public class Jogo {
 	sequencia+=jogadores[jogadores.length-1];
 	if(status.equals("Fim")){
 		jogadores[0] = null;
-		
 	}
 		
 	String relatorio = "Status: " + status + "\nJogadores: " + sequencia + "\nTabuleiro: "
@@ -98,17 +88,7 @@ public class Jogo {
 		if(tile!=null)tile.reset();
 		tilesPego.add(tile);
 	}
-/*
-	private void pegarProximoTile() {
-		tileAtual = proximoTile;
-		proximoTile = tiles.pegar();
-		//if(tileAtual!=null)tileAtual.reset();
-		//if(proximoTile!=null)proximoTile.reset();
-		
-		//proximoTile = tiles.pegar();
-		//proximoTile.reset();
-	}
-*/
+
 	public Jogo finalizarRodada() {
 		if(status.equals("Início")){
 			pegarProximoTile();
@@ -126,6 +106,7 @@ public class Jogo {
 		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, tileAtual);
 		++indice;
 		pegarProximoTile();
+
 		return this;		
 	}
 	
