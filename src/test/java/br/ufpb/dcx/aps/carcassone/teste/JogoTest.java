@@ -273,9 +273,12 @@ public class JogoTest {
 
 	private void rodada(int girosAntesPosicionar, Tile tileReferencia, Lado ladoTileReferencia,
 			int girosDepoisPosicionar, boolean finaliza) {
+/*
+ * Não pode conter este loop aqui, porque duplicará a quantidade de giros do tile antes de posicionar
 		for (int i = 0; i < girosAntesPosicionar; i++) {
 			jogo.girarTile();
 		}
+*/
 		girar(girosAntesPosicionar);
 
 		jogo.posicionarTile(tileReferencia, ladoTileReferencia);
