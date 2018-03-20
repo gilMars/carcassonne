@@ -1,15 +1,11 @@
 package br.ufpb.dcx.aps.carcassone;
-import static br.ufpb.dcx.aps.carcassone.TilesJogoBase.*;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
-import static org.mockito.Mockito.*;
+import java.util.LinkedList;
 
-import javax.swing.JOptionPane;
-
-import org.mockito.Mockito;
 public class Jogo {
 	
-	private Tile proximoTile;
+	//private Tile proximoTile;
 	private Tile tileAtual;
 	static int indice = 0;
 	private BolsaDeTiles tiles;
@@ -17,6 +13,7 @@ public class Jogo {
 	private boolean iniciado = false;
 	private String status = "Início" ;
 	private Cor[] jogadores;
+	LinkedList<Tile> tilesPego = new LinkedList<Tile>();
 	
 	public Jogo(BolsaDeTiles tiles) {
 		this.tiles = tiles;
@@ -39,17 +36,21 @@ public class Jogo {
 		}
 
 		jogadores = sequencia;
-		pegarTileInicial();
+		//pegarTileInicial();
+		pegarProximoTile();
+		tileAtual = tilesPego.getLast();
 		iniciado = true;
+		indice = 0;
 		return this;
 	}
-
+	
+/*
 	public void pegarTileInicial() {
 		tileAtual = tiles.pegar();
 		proximoTile = tileAtual;
 		tileAtual.reset();
 	}
-	
+*/	
 	public Jogo iniciarPartida() {
 		throw new ExcecaoJogo("Cada partida deve ter uma sequência de pelo menos dois jogadores");
 	}
@@ -68,8 +69,8 @@ public class Jogo {
 	}
 		
 	String relatorio = "Status: " + status + "\nJogadores: " + sequencia + "\nTabuleiro: "
-	+ tabuleiro+ "\nJogador da rodada: " + jogadores[0] + "\nPróximo tile: "
-			+ proximoTile;
+	+ tabuleiro+ "\nJogador da rodada: " + jogadores[(indice%jogadores.length)] + "\nPróximo tile: "
+			+ tilesPego.getLast();
 	
 		return relatorio;
 	}
@@ -92,7 +93,12 @@ public class Jogo {
 		status = "Tile";
 		return this;
 	}
-
+	private void pegarProximoTile() {
+		Tile tile = tiles.pegar();
+		if(tile!=null)tile.reset();
+		tilesPego.add(tile);
+	}
+/*
 	private void pegarProximoTile() {
 		tileAtual = proximoTile;
 		proximoTile = tiles.pegar();
@@ -102,13 +108,13 @@ public class Jogo {
 		//proximoTile = tiles.pegar();
 		//proximoTile.reset();
 	}
-
+*/
 	public Jogo finalizarRodada() {
 		if(status.equals("Início")){
 			pegarProximoTile();
 			
 		}else{
-			proximoTile = null;
+			tileAtual = tilesPego.getLast();
 			status = "Fim";
 		}
 		return this;
@@ -116,8 +122,9 @@ public class Jogo {
 
 	public Jogo posicionarTile(Tile tileReferencia, Lado ladoTileReferencia) {
 		status = "Tile";
-		
-		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, proximoTile);
+		tileAtual = tilesPego.getLast();
+		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, tileAtual);
+		++indice;
 		pegarProximoTile();
 		return this;		
 	}
