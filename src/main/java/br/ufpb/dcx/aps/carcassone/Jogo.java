@@ -4,6 +4,8 @@ import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 import static org.mockito.Mockito.*;
 
+import javax.swing.JOptionPane;
+
 import org.mockito.Mockito;
 public class Jogo {
 	
@@ -45,7 +47,7 @@ public class Jogo {
 	public void pegarTileInicial() {
 		tileAtual = tiles.pegar();
 		proximoTile = tileAtual;
-		tileAtual.reset();		
+		tileAtual.reset();
 	}
 	
 	public Jogo iniciarPartida() {
@@ -92,10 +94,10 @@ public class Jogo {
 	}
 
 	private void pegarProximoTile() {
-		
 		tileAtual = proximoTile;
 		proximoTile = tiles.pegar();
-		if(proximoTile!=null)proximoTile.reset();
+		//if(tileAtual!=null)tileAtual.reset();
+		//if(proximoTile!=null)proximoTile.reset();
 		
 		//proximoTile = tiles.pegar();
 		//proximoTile.reset();
@@ -114,7 +116,9 @@ public class Jogo {
 
 	public Jogo posicionarTile(Tile tileReferencia, Lado ladoTileReferencia) {
 		status = "Tile";
+		
 		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, proximoTile);
+		pegarProximoTile();
 		return this;		
 	}
 	
