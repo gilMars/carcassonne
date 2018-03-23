@@ -3,8 +3,6 @@ import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 import java.util.LinkedList;
 
-import javax.swing.JOptionPane;
-
 public class Jogo {
 	
 	private Tile tileAtual;
@@ -99,17 +97,7 @@ public class Jogo {
 			status = "Início";
 			indice++;
 			proximoJogador = jogadores[indice%jogadores.length];
-			//JOptionPane.showMessageDialog(null, proximoJogador);
 		}
-		/*
-		if(status.equals("Início")){
-			pegarProximoTile();
-			
-		}else{
-			tileAtual = tilesPego.getLast();
-			status = "Fim";
-		}
-		*/
 		return this;
 	}
 
