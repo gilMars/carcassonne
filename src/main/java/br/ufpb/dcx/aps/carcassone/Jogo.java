@@ -3,6 +3,8 @@ import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 public class Jogo {
 	
 	private Tile tileAtual;
@@ -12,6 +14,7 @@ public class Jogo {
 	private boolean iniciado = false;
 	private String status = "Início" ;
 	private Cor[] jogadores;
+	private Cor proximoJogador;
 	LinkedList<Tile> tilesPego = new LinkedList<Tile>();
 	
 	public Jogo(BolsaDeTiles tiles) {
@@ -39,6 +42,7 @@ public class Jogo {
 		tileAtual = tilesPego.getLast();
 		iniciado = true;
 		indice = 0;
+		proximoJogador = jogadores[indice%jogadores.length];
 		return this;
 	}
 	
@@ -54,12 +58,9 @@ public class Jogo {
 		sequencia+=jogadores[i].toString()+", ";
 	}
 	sequencia+=jogadores[jogadores.length-1];
-	if(status.equals("Fim")){
-		jogadores[0] = null;
-	}
 		
 	String relatorio = "Status: " + status + "\nJogadores: " + sequencia + "\nTabuleiro: "
-	+ tabuleiro+ "\nJogador da rodada: " + jogadores[(indice%jogadores.length)] + "\nPróximo tile: "
+	+ tabuleiro+ "\nJogador da rodada: " + proximoJogador + "\nPróximo tile: "
 			+ tilesPego.getLast();
 	
 		return relatorio;
@@ -93,9 +94,12 @@ public class Jogo {
 		tileAtual = tilesPego.getLast();
 		if (tileAtual == null) {
 			status = "Fim";
-			jogadores[indice%jogadores.length] = null;
+			proximoJogador = null;
 		} else {
 			status = "Início";
+			indice++;
+			proximoJogador = jogadores[indice%jogadores.length];
+			//JOptionPane.showMessageDialog(null, proximoJogador);
 		}
 		/*
 		if(status.equals("Início")){
@@ -113,7 +117,6 @@ public class Jogo {
 		status = "Tile";
 		tileAtual = tilesPego.getLast();
 		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, tileAtual);
-		++indice;
 		pegarProximoTile();
 
 		return this;		
