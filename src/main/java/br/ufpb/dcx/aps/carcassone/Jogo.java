@@ -90,6 +90,14 @@ public class Jogo {
 	}
 
 	public Jogo finalizarRodada() {
+		tileAtual = tilesPego.getLast();
+		if (tileAtual == null) {
+			status = "Fim";
+			jogadores[indice%jogadores.length] = null;
+		} else {
+			status = "Início";
+		}
+		/*
 		if(status.equals("Início")){
 			pegarProximoTile();
 			
@@ -97,6 +105,7 @@ public class Jogo {
 			tileAtual = tilesPego.getLast();
 			status = "Fim";
 		}
+		*/
 		return this;
 	}
 
