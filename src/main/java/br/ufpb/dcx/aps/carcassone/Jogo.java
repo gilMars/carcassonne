@@ -7,10 +7,10 @@ import java.util.LinkedList;
 public class Jogo {
 
 	private Tile tileAtual;
-	static int indice = 0;
+	static int indice;
 	private BolsaDeTiles tiles;
 	private TabuleiroFlexivel tabuleiro = new TabuleiroFlexivel("");
-	private boolean iniciado = false;
+	private boolean iniciado;
 	private String status = "Início";
 	private Cor[] jogadores;
 	private Cor proximoJogador;
@@ -21,7 +21,7 @@ public class Jogo {
 	}
 
 	public Jogo iniciarPartida(Cor... sequencia) {
-		if (iniciado == true) {
+		if (iniciado) {
 			throw new ExcecaoJogo("Não pode iniciar uma partida enquanto a partida anterior não for finalizada");
 		}
 		if (sequencia.length < 2) {
@@ -45,13 +45,9 @@ public class Jogo {
 		
 		return this;
 	}
-
-	public Jogo iniciarPartida() {
-		throw new ExcecaoJogo("Cada partida deve ter uma sequência de pelo menos dois jogadores");
-	}
-
+	
 	public String relatorioPartida() {
-		if (iniciado == false) {
+		if (!iniciado) {
 			throw new ExcecaoJogo("Partida não iniciada");
 		}
 		String sequencia = "";
@@ -74,7 +70,7 @@ public class Jogo {
 	}
 
 	public Jogo posicionarInicial() {
-		if (iniciado == false) {
+		if (!iniciado) {
 			throw new ExcecaoJogo("O tile inicial não pode ser posicionado antes de iniciar a partida");
 		}
 		tabuleiro.adicionarPrimeiroTile(tileAtual);
