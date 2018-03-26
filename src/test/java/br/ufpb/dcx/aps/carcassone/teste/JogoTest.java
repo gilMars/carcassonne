@@ -201,7 +201,7 @@ public class JogoTest {
 		rodadaInicialSemGirar();
 		
 		rodada(2, t45, LESTE, 0, FINALIZA);
-		verificarRelatorioPartida("Tile", "AMARELO, VERMELHO", "45N19S", "AMARELO", "46N");
+		verificarRelatorioPartida("Início", "AMARELO, VERMELHO", "45N19S", "AMARELO", "46N");
 	}
 	
 	@Test //#20
