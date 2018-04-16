@@ -17,7 +17,7 @@ public class TabuleiroFlexivel {
 	private String espacoVazio;
 
 	public TabuleiroFlexivel() {
-		this("");
+		this(" ");
 	}
 
 	public TabuleiroFlexivel(String espacoVazio) {
@@ -73,8 +73,8 @@ public class TabuleiroFlexivel {
 	private void posicionarNorte(Tile tileNovo, CelulaTabuleiro celulaReferencia, CelulaTabuleiro[][] tabuleiro) {
 		celulaOcupada(celulaReferencia, tabuleiro, celulaReferencia.getX(), celulaReferencia.getY() + 1, "NORTE");
 
-		verificarTipoLado(tileNovo, celulaReferencia.getTile(), "NORTE", celulaReferencia.getTile().getLadoNorte(),
-				"SUL", tileNovo.getLadoSul());
+		verificarTipoLado(tileNovo, celulaReferencia.getTile(), "Norte", celulaReferencia.getTile().getLadoNorte(),
+				"Sul", tileNovo.getLadoSul());
 
 		CelulaTabuleiro novaCelula = new CelulaTabuleiro(tileNovo, celulaReferencia.getX(),
 				celulaReferencia.getY() + 1);
@@ -89,8 +89,8 @@ public class TabuleiroFlexivel {
 	private void posicionarLeste(Tile tileNovo, CelulaTabuleiro celulaReferencia, CelulaTabuleiro[][] tabuleiro) {
 		celulaOcupada(celulaReferencia, tabuleiro, celulaReferencia.getX() + 1, celulaReferencia.getY(), "LESTE");
 
-		verificarTipoLado(tileNovo, celulaReferencia.getTile(), "LESTE", celulaReferencia.getTile().getLadoLeste(),
-				"OESTE", tileNovo.getLadoOeste());
+		verificarTipoLado(tileNovo, celulaReferencia.getTile(), "Leste", celulaReferencia.getTile().getLadoLeste(),
+				"Oeste", tileNovo.getLadoOeste());
 
 		CelulaTabuleiro novaCelula = new CelulaTabuleiro(tileNovo, celulaReferencia.getX() + 1,
 				celulaReferencia.getY());
@@ -105,8 +105,8 @@ public class TabuleiroFlexivel {
 	private void posicionarSul(Tile tileNovo, CelulaTabuleiro celulaReferencia, CelulaTabuleiro[][] tabuleiro) {
 		celulaOcupada(celulaReferencia, tabuleiro, celulaReferencia.getX(), celulaReferencia.getY() - 1, "SUL");
 
-		verificarTipoLado(tileNovo, celulaReferencia.getTile(), "SUL", celulaReferencia.getTile().getLadoSul(),
-				"NORTE", tileNovo.getLadoNorte());
+		verificarTipoLado(tileNovo, celulaReferencia.getTile(), "Sul", celulaReferencia.getTile().getLadoSul(), "Norte",
+				tileNovo.getLadoNorte());
 
 		CelulaTabuleiro novaCelula = new CelulaTabuleiro(tileNovo, celulaReferencia.getX(),
 				celulaReferencia.getY() - 1);
@@ -121,8 +121,8 @@ public class TabuleiroFlexivel {
 	private void posicionarOeste(Tile tileNovo, CelulaTabuleiro celulaReferencia, CelulaTabuleiro[][] tabuleiro) {
 		celulaOcupada(celulaReferencia, tabuleiro, celulaReferencia.getX() - 1, celulaReferencia.getY(), "OESTE");
 
-		verificarTipoLado(tileNovo, celulaReferencia.getTile(), "OESTE", celulaReferencia.getTile().getLadoOeste(),
-				"LESTE", tileNovo.getLadoLeste());
+		verificarTipoLado(tileNovo, celulaReferencia.getTile(), "Oeste", celulaReferencia.getTile().getLadoOeste(),
+				"Leste", tileNovo.getLadoLeste());
 
 		CelulaTabuleiro novaCelula = new CelulaTabuleiro(tileNovo, celulaReferencia.getX() - 1,
 				celulaReferencia.getY());
@@ -156,16 +156,15 @@ public class TabuleiroFlexivel {
 
 	private void verificarTipoLado(Tile tileNovo, Tile tileReferencia, String ladoReferencia,
 			TipoLado tipoLadoReferencia, String ladoNovo, TipoLado tipoLadoNovo) {
-		ladoReferencia = ladoReferencia.substring(0, 1) + ladoReferencia.substring(1).toLowerCase();
-		String sTipoLadoReferencia = tipoLadoReferencia.toString().substring(0, 1) + tipoLadoReferencia.toString().substring(1).toLowerCase();
-		ladoNovo = ladoNovo.substring(0, 1) + ladoNovo.substring(1).toLowerCase();
-		String sTipoLadoNovo = tipoLadoNovo.toString().substring(0, 1) + tipoLadoNovo.toString().substring(1).toLowerCase();
 		if (!tipoLadoReferencia.equals(tipoLadoNovo)) {
 			throw new ExcecaoJogo("O lado " + ladoReferencia + " do tile " + tileReferencia.getId() + " ("
-					+ sTipoLadoReferencia + ") é incompatível com o lado " + ladoNovo + " do tile " + tileNovo.getId()+ " ("
-					+ sTipoLadoNovo + ")");
+					+ tipoLadoReferencia.getAbreviacao() + ") é incompatível com o lado " + ladoNovo + " do tile "
+					+ tileNovo.getId() + " (" + tipoLadoNovo.getAbreviacao() + ")");
 		}
 	}
+
+	// "O lado Leste do tile 45 (Campo) é incompatível com o lado Oeste do tile 19
+	// (Cidade)"
 
 	private CelulaTabuleiro encontrarCelula(CelulaTabuleiro celulaAtual, Tile tileReferencia) {
 		ArrayList<CelulaTabuleiro> celulasVisitadas = new ArrayList<>();
@@ -212,30 +211,34 @@ public class TabuleiroFlexivel {
 
 	@Override
 	public String toString() {
+		if (extremoLeste == null) {
+			return "";
+		}
+
 		String s = "";
 
 		CelulaTabuleiro[][] tabuleiro = montarTabuleiro();
-		if (tabuleiro != null) {
+
 		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < tabuleiro.length; i++) {
-				s += (tabuleiro[i][j] == null) ? espacoVazio : tabuleiro[i][j].getTile();
+				s += (tabuleiro[i][j] == null) ? espacoVazio : tabuleiro[i][j].getTile().toString();
 			}
-			s += "\n";
+
+			if (j > 0) {
+				s += "\n";
+			}
 		}
-		s = s.substring(0,s.length()-1);
-		}
+
 		return s;
 	}
 
 	private CelulaTabuleiro[][] montarTabuleiro() {
-		CelulaTabuleiro[][] tabuleiro = null;
-		if (extremoLeste != null && extremoOeste != null && extremoNorte != null && extremoSul != null) {
-			int largura = extremoLeste.getX() - extremoOeste.getX() + 1;
-			int altura = extremoNorte.getY() - extremoSul.getY() + 1;
-			tabuleiro = new CelulaTabuleiro[largura][altura];
-			montarTabuleiro(celulaInicial, tabuleiro, new ArrayList<>());
-		}
-	
+		int largura = extremoLeste.getX() - extremoOeste.getX() + 1;
+		int altura = extremoNorte.getY() - extremoSul.getY() + 1;
+		CelulaTabuleiro[][] tabuleiro = new CelulaTabuleiro[largura][altura];
+
+		montarTabuleiro(celulaInicial, tabuleiro, new ArrayList<>());
+
 		return tabuleiro;
 	}
 
