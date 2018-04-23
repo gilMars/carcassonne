@@ -80,7 +80,7 @@ public class JogoTest {
 		mockarTiles(tiles, t30, t29);
 		Partida partida = jogo.criarPartida(tiles, VERDE, VERMELHO);
 
-		verificarRelatorioPartida(partida, "Em_Andamento", "AZUL(0,7); VERDE(0,7)");
+		verificarRelatorioPartida(partida, "Em_Andamento", "VERDE(0,7); VERMELHO(0,7)");
 		verificarRelatorioTurno(partida, "VERDE", "29N", "Início_Turno");
 		verificarRelatorioTabuleiro(partida, "30N");
 	}
