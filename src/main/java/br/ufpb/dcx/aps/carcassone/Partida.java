@@ -1,5 +1,7 @@
 package br.ufpb.dcx.aps.carcassone;
 
+import javax.swing.JOptionPane;
+
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 
@@ -8,18 +10,42 @@ public class Partida {
 	private BolsaDeTiles tiles;
 	private Tile proximoTile;
 	private TabuleiroFlexivel tabuleiro = new TabuleiroFlexivel("  ");
+	Jogador[] jogadores;
+	Estado estadoTurno = Estado.T_INICIO;
+	Estado estadoPartida;
+	int jogadorDaVez = 0;
+	
+	Partida(BolsaDeTiles tiles, Cor... sequencia) {
 
-	Partida(BolsaDeTiles tiles) {
 		this.tiles = tiles;
+		pegarProximoTile();
+
+		jogadores = new Jogador[sequencia.length];
+		for (int i = 0; i < sequencia.length; ++i) {
+			jogadores[i] = new Jogador(sequencia[i]);
+		}
+		estadoPartida = Estado.P_ANDAMENTO;
+		tabuleiro.adicionarPrimeiroTile(proximoTile);
 		pegarProximoTile();
 	}
 
 	public String relatorioPartida() {
-		return null;
+
+		String sequencia = "";
+		for (int i = 0; i < jogadores.length - 1; i++) {
+			sequencia += jogadores[i].toString() + "; ";
+		}
+		sequencia += jogadores[jogadores.length - 1];
+
+		String relatorio = "Status: " + estadoPartida + "\nJogadores: " + sequencia;
+
+		return relatorio;
 	}
 
 	public String relatorioTurno() {
-		return null;
+		Jogador jogador = jogadores[jogadorDaVez%jogadores.length];
+		String relatorio = "Jogador: " + jogador.getCor() + "\nTile: " + proximoTile + "\nStatus: " + estadoTurno;
+		return relatorio;
 	}
 
 	public Partida girarTile() {
@@ -75,6 +101,6 @@ public class Partida {
 	}
 
 	public String relatorioTabuleiro() {
-		return null;
+		return tabuleiro.toString();
 	}
 }
