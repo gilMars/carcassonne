@@ -1,7 +1,5 @@
 package br.ufpb.dcx.aps.carcassone;
 
-import javax.swing.JOptionPane;
-
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 
