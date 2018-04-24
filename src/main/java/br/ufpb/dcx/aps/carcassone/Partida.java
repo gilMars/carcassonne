@@ -101,4 +101,10 @@ public class Partida {
 	public String relatorioTabuleiro() {
 		return tabuleiro.toString();
 	}
+	
+	public void verificarFimDaPartida() {
+		if (proximoTile == null) {
+			estadoPartida = Estado.P_FIM;
+		}
+	}
 }
