@@ -53,11 +53,19 @@ public class Partida {
 
 	private void pegarProximoTile() {
 		proximoTile = tiles.pegar();
-		proximoTile.reset();
+		if (proximoTile != null) {
+			proximoTile.reset();
+		}
+		
 	}
 
 	public Partida finalizarTurno() {
 		pegarProximoTile();
+		jogadorDaVez++;
+		estadoTurno = Estado.T_INICIO;
+		if (proximoTile == null) {
+			estadoPartida = Estado.P_FIM;
+		}
 		return this;
 	}
 
