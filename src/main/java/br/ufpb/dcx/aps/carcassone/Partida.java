@@ -59,6 +59,7 @@ public class Partida {
 		}
 
 		proximoTile.girar();
+		System.out.println("\nNorte: "+proximoTile.getLadoNorte()+"\nLeste: "+proximoTile.getLadoLeste()+"\nSul: "+proximoTile.getLadoSul()+"\nOeste: "+proximoTile.getLadoOeste());
 		return this;
 	}
 
