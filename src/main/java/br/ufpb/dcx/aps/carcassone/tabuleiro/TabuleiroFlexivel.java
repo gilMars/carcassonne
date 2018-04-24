@@ -61,11 +61,14 @@ public class TabuleiroFlexivel {
 			throw new ExcecaoJogo("Tile não encontrada: " + tileReferencia.getId());
 		}
 
-		CelulaTabuleiro celulaDuplicada = encontrarCelula(celulaInicial, novoTile);
+		//CelulaTabuleiro celulaDuplicada = encontrarCelula(celulaInicial, novoTile);
 
-		if (celulaDuplicada != null) {
-			throw new ExcecaoJogo("O tile " + novoTile.getId() + " já foi posicionado no tabuleiro");
+		if (verificarTilePosicionado(novoTile)) {
+			throw new ExcecaoJogo("Não pode reposicionar tile já posicionado");
 		}
+		/*if (celulaDuplicada != null) {
+			throw new ExcecaoJogo("Não pode reposicionar tile já posicionado");
+		}*/
 
 		return celulaReferencia;
 	}
@@ -171,6 +174,13 @@ public class TabuleiroFlexivel {
 		return encontrarCelulaInterno(celulaAtual, tileReferencia, null, celulasVisitadas);
 	}
 
+	public boolean verificarTilePosicionado(Tile tile) {
+		CelulaTabuleiro celulaDuplicada = encontrarCelula(celulaInicial, tile);
+		if (celulaDuplicada != null) {
+			return true;
+		}
+		return false;
+	}
 	private CelulaTabuleiro encontrarCelulaInterno(CelulaTabuleiro celulaAtual, Tile tileReferencia, Lado movimento,
 			ArrayList<CelulaTabuleiro> celulasVisitadas) {
 

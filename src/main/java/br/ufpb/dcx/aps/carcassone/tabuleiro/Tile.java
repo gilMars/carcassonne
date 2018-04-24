@@ -92,7 +92,7 @@ public class Tile {
 		ladoSul = ladoLeste;
 		ladoLeste = temp;
 	}
-
+	
 	public void reset() {
 		while (orientacao != Lado.NORTE) {
 			girar();

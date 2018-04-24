@@ -12,7 +12,7 @@ public class Partida {
 	Estado estadoTurno = Estado.T_INICIO;
 	Estado estadoPartida;
 	int jogadorDaVez = 0;
-	
+
 	Partida(BolsaDeTiles tiles, Cor... sequencia) {
 
 		this.tiles = tiles;
@@ -25,6 +25,7 @@ public class Partida {
 		estadoPartida = Estado.P_ANDAMENTO;
 		tabuleiro.adicionarPrimeiroTile(proximoTile);
 		pegarProximoTile();
+		verificarFimDaPartida();
 	}
 
 	public String relatorioPartida() {
@@ -41,28 +42,44 @@ public class Partida {
 	}
 
 	public String relatorioTurno() {
-		Jogador jogador = jogadores[jogadorDaVez%jogadores.length];
+		if (verificarFimDaPartida()) {
+			throw new ExcecaoJogo("Partida finalizada");
+		}
+		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
 		String relatorio = "Jogador: " + jogador.getCor() + "\nTile: " + proximoTile + "\nStatus: " + estadoTurno;
 		return relatorio;
 	}
 
 	public Partida girarTile() {
+		if (verificarFimDaPartida()) {
+			throw new ExcecaoJogo("Não pode girar tiles com a partida finalizada");
+		}
+		if (tabuleiro.verificarTilePosicionado(proximoTile)) {
+			throw new ExcecaoJogo("Não pode girar tile já posicionado");
+		}
+
 		proximoTile.girar();
 		return this;
 	}
 
 	private void pegarProximoTile() {
 		proximoTile = tiles.pegar();
-		proximoTile.reset();
+		if (!verificarTileVazio()) {
+			proximoTile.reset();
+		}
 	}
 
 	public Partida finalizarTurno() {
 		pegarProximoTile();
+		jogadorDaVez++;
+		estadoTurno = Estado.T_INICIO;
+		verificarFimDaPartida();
 		return this;
 	}
 
 	public Partida posicionarTile(Tile tileReferencia, Lado ladoTileReferencia) {
 		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, proximoTile);
+		estadoTurno = Estado.T_ANDAMENTO;
 		return this;
 	}
 
@@ -101,10 +118,20 @@ public class Partida {
 	public String relatorioTabuleiro() {
 		return tabuleiro.toString();
 	}
-	
-	public void verificarFimDaPartida() {
+
+	public boolean verificarTileVazio() {
 		if (proximoTile == null) {
-			estadoPartida = Estado.P_FIM;
+			return true;
 		}
+		return false;
 	}
+	
+	public boolean verificarFimDaPartida() {
+		if (verificarTileVazio()) {
+			estadoPartida = Estado.P_FIM;
+			return true;
+		}
+		return false;
+	}
+	
 }
