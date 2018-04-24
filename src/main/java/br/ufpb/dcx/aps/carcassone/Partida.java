@@ -63,6 +63,7 @@ public class Partida {
 
 	public Partida posicionarTile(Tile tileReferencia, Lado ladoTileReferencia) {
 		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, proximoTile);
+		estadoTurno = Estado.T_ANDAMENTO;
 		return this;
 	}
 
