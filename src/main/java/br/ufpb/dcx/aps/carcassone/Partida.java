@@ -58,11 +58,14 @@ public class Partida {
 
 	public Partida finalizarTurno() {
 		pegarProximoTile();
+		jogadorDaVez++;
+		estadoTurno = Estado.T_INICIO;
 		return this;
 	}
 
 	public Partida posicionarTile(Tile tileReferencia, Lado ladoTileReferencia) {
 		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, proximoTile);
+		estadoTurno = Estado.T_ANADMENTO;
 		return this;
 	}
 
