@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
-import br.ufpb.dcx.aps.carcassone.tabuleiro.TipoLado;
 
 public class Partida {
 
@@ -72,7 +71,6 @@ public class Partida {
 		// proximoTile = tiles.pegar();
 		if (!verificarTileVazio(tile)) {
 			tile.reset();
-			tile.setMeeple(null);
 		}
 
 		tilesPegos.add(tile);
@@ -92,82 +90,16 @@ public class Partida {
 		return this;
 	}
 
-	private void posicionarMeepleEstradaNorte() {
-		Tile tile = tilesPegos.getLast();
-		TipoLado lado = tile.getLadoNorte();
-		if (lado != TipoLadoCarcassonne.ESTRADA) {
-			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Norte do tile "
-		+tile.getId()+" é "+lado.getAbreviacao());
-		}
-		
-		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
-		Meeple meeple = new Meeple(Lado.NORTE, jogador.getCor(),tile);
-		tile.setMeeple(meeple);
-	}
-	
-	private void posicionarMeepleEstradaLeste() {
-		Tile tile = tilesPegos.getLast();
-		TipoLado lado = tile.getLadoLeste();
-		if (lado != TipoLadoCarcassonne.ESTRADA) {
-			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Leste do tile "
-		+tile.getId()+" é "+lado.getAbreviacao());
-		}
-		
-		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
-		Meeple meeple = new Meeple(Lado.LESTE, jogador.getCor(),tile);
-		tile.setMeeple(meeple);		
-	}
-	
-	private void posicionarMeepleEstradaSul() {
-		Tile tile = tilesPegos.getLast();
-		TipoLado lado = tile.getLadoSul();
-		if (lado != TipoLadoCarcassonne.ESTRADA) {
-			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Sul do tile "
-		+tile.getId()+" é "+lado.getAbreviacao());
-		}
-		
-		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
-		Meeple meeple = new Meeple(Lado.SUL, jogador.getCor(),tile);
-		tile.setMeeple(meeple);	
-	}
-	
-	private void posicionarMeepleEstradaOeste() {
-		Tile tile = tilesPegos.getLast();
-		TipoLado lado = tile.getLadoOeste();
-		if (lado != TipoLadoCarcassonne.ESTRADA) {
-			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Oeste do tile "
-		+tile.getId()+" é "+lado.getAbreviacao());
-		}
-		
-		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
-		Meeple meeple = new Meeple(Lado.OESTE, jogador.getCor(),tile);
-		tile.setMeeple(meeple);			
-	}
-	
-
 	public Partida posicionarMeepleEstrada(Lado lado) {
 		Tile tile = tilesPegos.getLast();
+		
 		if (tilesPegos.size() == 2 && tile == null) {
 			throw new ExcecaoJogo("Impossível posicionar meeple na peça inicial");
 		}
-
-		switch(lado) {
-		case NORTE:
-			posicionarMeepleEstradaNorte();
-			break;
-		case LESTE:
-			posicionarMeepleEstradaLeste();
-			break;
-		case SUL:
-			posicionarMeepleEstradaSul();
-			break;
-		case OESTE:
-			posicionarMeepleEstradaOeste();
-		}
-
+		
 		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
 		Meeple meeple = new Meeple(lado, jogador.getCor(), tilesPegos.getLast());
-		tile.setMeeple(meeple);
+		tabuleiro.posicionarMeeple(meeple);
 		return this;
 	}
 

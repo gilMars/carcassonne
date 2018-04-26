@@ -140,6 +140,67 @@ public class TabuleiroFlexivel {
 		}
 	}
 
+	public void posicionarMeeple(Meeple meeple) {
+		switch(meeple.getLado()) {
+		case NORTE:
+			posicionarMeepleEstradaNorte(meeple);
+			break;
+		case LESTE:
+			posicionarMeepleEstradaLeste(meeple);
+			break;
+		case SUL:
+			posicionarMeepleEstradaSul(meeple);
+			break;
+		case OESTE:
+			posicionarMeepleEstradaOeste(meeple);
+		}
+		
+	}
+	
+	private void posicionarMeepleEstradaNorte(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+		Tile tile = celulaReferencial.getTile();
+		TipoLado lado = tile.getLadoNorte();
+		if (lado != TipoLadoCarcassonne.ESTRADA) {
+			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Norte do tile "+tile.getId()+" é "+lado.getAbreviacao());
+		}
+		
+		celulaReferencial.setMeeple(meeple);
+	}
+
+	private void posicionarMeepleEstradaLeste(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+		Tile tile = celulaReferencial.getTile();
+		TipoLado lado = tile.getLadoLeste();
+		if (lado != TipoLadoCarcassonne.ESTRADA) {
+			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Leste do tile "+tile.getId()+" é "+lado.getAbreviacao());
+		}
+		
+		celulaReferencial.setMeeple(meeple);
+	}
+
+	private void posicionarMeepleEstradaSul(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+		Tile tile = celulaReferencial.getTile();
+		TipoLado lado = tile.getLadoSul();
+		if (lado != TipoLadoCarcassonne.ESTRADA) {
+			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Sul do tile "+tile.getId()+" é "+lado.getAbreviacao());
+		}
+		
+		celulaReferencial.setMeeple(meeple);
+	}
+	
+	private void posicionarMeepleEstradaOeste(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+		Tile tile = celulaReferencial.getTile();
+		TipoLado lado = tile.getLadoOeste();
+		if (lado != TipoLadoCarcassonne.ESTRADA) {
+			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Oeste do tile "+tile.getId()+" é "+lado.getAbreviacao());
+		}
+		
+		celulaReferencial.setMeeple(meeple);
+	}
+	
 	private void celulaOcupada(CelulaTabuleiro celulaReferencia, CelulaTabuleiro[][] tabuleiro, int x, int y,
 			String posicao) {
 
@@ -282,7 +343,7 @@ public class TabuleiroFlexivel {
 
 		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < tabuleiro.length; i++) {
-				s += (tabuleiro[i][j] == null) ? espacoVazio : verificarEstradaTile(tabuleiro[i][j].getTile());
+				s += (tabuleiro[i][j] == null) ? espacoVazio : verificarEstradaTile(tabuleiro[i][j]);
 			}
 
 			if (j > 0) {
@@ -293,8 +354,8 @@ public class TabuleiroFlexivel {
 		return s;
 	}
 
-	private String verificarEstradaTile(Tile tile) {
-
+	private String verificarEstradaTile(CelulaTabuleiro celula) {
+		Tile tile = celula.getTile();
 		ArrayList<String> ladosStr = new ArrayList<String>();
 		String s = "";
 		if (tile != null) {
@@ -310,7 +371,7 @@ public class TabuleiroFlexivel {
 			if (tile.getLadoOeste() == TipoLadoCarcassonne.ESTRADA) {
 				ladosStr.add("O");
 			}
-			Meeple meeple = tile.getMeeple();
+			Meeple meeple = celula.getMeeple();
 
 			if (meeple != null) {
 				String lado = meeple.getLado().getAbreviacao();
@@ -337,7 +398,8 @@ class CelulaTabuleiro {
 	private Tile tile;
 	private CelulaTabuleiro norte, sul, leste, oeste;
 	private int x, y;
-
+	private Meeple meeplePosicionado = null;
+	
 	public static CelulaTabuleiro celulaVazia(int x, int y) {
 		return new CelulaTabuleiro(null, x, y);
 	}
@@ -356,6 +418,14 @@ class CelulaTabuleiro {
 		this.tile = tile;
 	}
 
+	public Meeple getMeeple() {
+		return meeplePosicionado;
+	}
+	
+	public void setMeeple(Meeple meeple) {
+		meeplePosicionado = meeple;
+	}
+	
 	public CelulaTabuleiro getNorte() {
 		return norte;
 	}
