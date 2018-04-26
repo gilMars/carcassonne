@@ -279,15 +279,10 @@ public class TabuleiroFlexivel {
 		String s = "";
 
 		CelulaTabuleiro[][] tabuleiro = montarTabuleiro();
+
 		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < tabuleiro.length; i++) {
-				if (tabuleiro[i][j] != null) {
-					Tile tileAtual = tabuleiro[i][j].getTile();
-					if (tileAtual != null) {
-						s += verificarEstradaTile(tileAtual);
-					}
-				}
-
+				s += (tabuleiro[i][j] == null) ? espacoVazio : verificarEstradaTile(tabuleiro[i][j].getTile());
 			}
 
 			if (j > 0) {
@@ -308,9 +303,11 @@ public class TabuleiroFlexivel {
 			}
 			if (tile.getLadoLeste() == TipoLadoCarcassonne.ESTRADA) {
 				ladosStr.add("L");
-			} else if (tile.getLadoSul() == TipoLadoCarcassonne.ESTRADA) {
+			} 
+			if (tile.getLadoSul() == TipoLadoCarcassonne.ESTRADA) {
 				ladosStr.add("S");
-			} else if (tile.getLadoOeste() == TipoLadoCarcassonne.ESTRADA) {
+			}
+			if (tile.getLadoOeste() == TipoLadoCarcassonne.ESTRADA) {
 				ladosStr.add("O");
 			}
 			Meeple meeple = tile.getMeeple();
