@@ -1,29 +1,32 @@
 package br.ufpb.dcx.aps.carcassone;
 
+import java.util.LinkedList;
+
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
+import br.ufpb.dcx.aps.carcassone.tabuleiro.TipoLado;
 
 public class Partida {
 
 	private BolsaDeTiles tiles;
-	private Tile proximoTile;
 	private TabuleiroFlexivel tabuleiro = new TabuleiroFlexivel("  ");
 	Jogador[] jogadores;
 	Estado estadoTurno = Estado.T_INICIO;
 	Estado estadoPartida;
 	int jogadorDaVez = 0;
 
+	LinkedList<Tile> tilesPegos = new LinkedList<Tile>();
+
 	Partida(BolsaDeTiles tiles, Cor... sequencia) {
 
 		this.tiles = tiles;
 		pegarProximoTile();
-
 		jogadores = new Jogador[sequencia.length];
 		for (int i = 0; i < sequencia.length; ++i) {
 			jogadores[i] = new Jogador(sequencia[i]);
 		}
 		estadoPartida = Estado.P_ANDAMENTO;
-		tabuleiro.adicionarPrimeiroTile(proximoTile);
+		tabuleiro.adicionarPrimeiroTile(tilesPegos.getFirst());
 		pegarProximoTile();
 		verificarFimDaPartida();
 	}
@@ -46,7 +49,8 @@ public class Partida {
 			throw new ExcecaoJogo("Partida finalizada");
 		}
 		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
-		String relatorio = "Jogador: " + jogador.getCor() + "\nTile: " + proximoTile + "\nStatus: " + estadoTurno;
+		String relatorio = "Jogador: " + jogador.getCor() + "\nTile: " + tilesPegos.getLast() + "\nStatus: "
+				+ estadoTurno;
 		return relatorio;
 	}
 
@@ -54,20 +58,23 @@ public class Partida {
 		if (verificarFimDaPartida()) {
 			throw new ExcecaoJogo("Não pode girar tiles com a partida finalizada");
 		}
-		if (tabuleiro.verificarTilePosicionado(proximoTile)) {
+		if (tabuleiro.verificarTilePosicionado(tilesPegos.getLast())) {
 			throw new ExcecaoJogo("Não pode girar tile já posicionado");
 		}
 
-		proximoTile.girar();
-		System.out.println("\nNorte: "+proximoTile.getLadoNorte()+"\nLeste: "+proximoTile.getLadoLeste()+"\nSul: "+proximoTile.getLadoSul()+"\nOeste: "+proximoTile.getLadoOeste());
+		tilesPegos.getLast().girar();
 		return this;
 	}
 
 	private void pegarProximoTile() {
-		proximoTile = tiles.pegar();
-		if (!verificarTileVazio()) {
-			proximoTile.reset();
+		Tile tile = tiles.pegar();
+
+		// proximoTile = tiles.pegar();
+		if (!verificarTileVazio(tile)) {
+			tile.reset();
 		}
+
+		tilesPegos.add(tile);
 	}
 
 	public Partida finalizarTurno() {
@@ -79,12 +86,54 @@ public class Partida {
 	}
 
 	public Partida posicionarTile(Tile tileReferencia, Lado ladoTileReferencia) {
-		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, proximoTile);
+		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, tilesPegos.getLast());
 		estadoTurno = Estado.T_ANDAMENTO;
 		return this;
 	}
 
 	public Partida posicionarMeepleEstrada(Lado lado) {
+		Tile tile = tilesPegos.getLast();
+		if (tilesPegos.size() == 2 && tile == null) {
+			throw new ExcecaoJogo("Impossível posicionar meeple na peça inicial");
+		}
+		boolean error = false;
+		TipoLado ladoTile = null;
+		switch(lado) {
+		case NORTE:
+			ladoTile = tile.getLadoNorte();
+			if (ladoTile != TipoLadoCarcassonne.ESTRADA) {
+				error = true;
+			}
+			break;
+		case LESTE:
+			ladoTile = tile.getLadoLeste();
+			if (ladoTile != TipoLadoCarcassonne.ESTRADA) {
+				error = true;
+			}
+			break;
+		case SUL:
+			ladoTile = tile.getLadoSul();
+			if (ladoTile != TipoLadoCarcassonne.ESTRADA) {
+				error = true;
+			}
+			break;
+		case OESTE:
+			ladoTile = tile.getLadoOeste();
+			if (ladoTile != TipoLadoCarcassonne.ESTRADA) {
+				error = true;
+			}
+		}
+		if (error) {
+			String l = lado.toString().charAt(0)+lado.toString().substring(1).toLowerCase();
+			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado "+l+" do tile "+tile.getId()+" é "+ladoTile.getAbreviacao());
+		}
+		if (tile.getMeeple() == null) {
+			Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
+			Meeple meeple = new Meeple(Lado.SUL, jogador.getCor(),
+					tilesPegos.getLast());
+			tile.setMeeple(meeple);
+			System.out.println(meeple);
+		}
 		return this;
 	}
 
@@ -101,7 +150,7 @@ public class Partida {
 	}
 
 	public String getEstradas() {
-		return null;
+		return tabuleiro.verificarEstrada();
 	}
 
 	public String getCampos() {
@@ -120,19 +169,19 @@ public class Partida {
 		return tabuleiro.toString();
 	}
 
-	public boolean verificarTileVazio() {
-		if (proximoTile == null) {
+	public boolean verificarTileVazio(Tile tile) {
+		if (tile == null) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean verificarFimDaPartida() {
-		if (verificarTileVazio()) {
+		if (verificarTileVazio(tilesPegos.getLast())) {
 			estadoPartida = Estado.P_FIM;
 			return true;
 		}
 		return false;
 	}
-	
+
 }

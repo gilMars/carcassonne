@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import br.ufpb.dcx.aps.carcassone.ExcecaoJogo;
 import br.ufpb.dcx.aps.carcassone.Lado;
+import br.ufpb.dcx.aps.carcassone.Meeple;
+import br.ufpb.dcx.aps.carcassone.TipoLadoCarcassonne;
 
 public class TabuleiroFlexivel {
 
@@ -61,14 +63,15 @@ public class TabuleiroFlexivel {
 			throw new ExcecaoJogo("Tile não encontrada: " + tileReferencia.getId());
 		}
 
-		//CelulaTabuleiro celulaDuplicada = encontrarCelula(celulaInicial, novoTile);
+		// CelulaTabuleiro celulaDuplicada = encontrarCelula(celulaInicial, novoTile);
 
 		if (verificarTilePosicionado(novoTile)) {
 			throw new ExcecaoJogo("Não pode reposicionar tile já posicionado");
 		}
-		/*if (celulaDuplicada != null) {
-			throw new ExcecaoJogo("Não pode reposicionar tile já posicionado");
-		}*/
+		/*
+		 * if (celulaDuplicada != null) { throw new
+		 * ExcecaoJogo("Não pode reposicionar tile já posicionado"); }
+		 */
 
 		return celulaReferencia;
 	}
@@ -181,6 +184,7 @@ public class TabuleiroFlexivel {
 		}
 		return false;
 	}
+
 	private CelulaTabuleiro encontrarCelulaInterno(CelulaTabuleiro celulaAtual, Tile tileReferencia, Lado movimento,
 			ArrayList<CelulaTabuleiro> celulasVisitadas) {
 
@@ -265,6 +269,67 @@ public class TabuleiroFlexivel {
 		montarTabuleiro(celulaAtual.getLeste(), tabuleiro, celulasVisitadas);
 		montarTabuleiro(celulaAtual.getSul(), tabuleiro, celulasVisitadas);
 		montarTabuleiro(celulaAtual.getOeste(), tabuleiro, celulasVisitadas);
+	}
+
+	public String verificarEstrada() {
+		if (extremoLeste == null) {
+			return "";
+		}
+
+		String s = "";
+
+		CelulaTabuleiro[][] tabuleiro = montarTabuleiro();
+		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
+			for (int i = 0; i < tabuleiro.length; i++) {
+				Tile tileAtual = tabuleiro[i][j].getTile();
+				if (tileAtual != null) {
+					s += verificarEstradaTile(tileAtual);
+				}
+
+			}
+
+			if (j > 0) {
+				s += " ";
+			}
+		}
+
+		return s;
+	}
+
+	private String verificarEstradaTile(Tile tile) {
+		
+		ArrayList<String> ladosStr = new ArrayList<String>();
+		String s = "";
+		if (tile != null) {
+			if (tile.getLadoNorte() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("N");
+			}
+			if (tile.getLadoLeste() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("L");
+			} else if (tile.getLadoSul() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("S");
+			} else if (tile.getLadoOeste() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("O");
+			}
+			Meeple meeple = tile.getMeeple();
+			
+			if (meeple != null) {
+				String lado = meeple.getLado().getAbreviacao();
+				int indice = ladosStr.indexOf(lado);
+				if (indice > -1) {
+					ladosStr.set(indice,meeple.toString());
+				}
+			}
+			s = tile.getId()+ladosStr.toString().replace('[', '(').replace(']', ')').replace(" ", "");
+		}
+
+		return s;
+
+	}
+
+	public boolean verificarCeculaInicial(Tile tile) {
+		System.out.println(celulaInicial.getTile().equals(tile));
+		return celulaInicial.getTile().equals(tile);
 	}
 }
 

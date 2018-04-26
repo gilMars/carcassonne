@@ -1,6 +1,7 @@
 package br.ufpb.dcx.aps.carcassone.tabuleiro;
 
 import br.ufpb.dcx.aps.carcassone.Lado;
+import br.ufpb.dcx.aps.carcassone.Meeple;
 
 public class Tile {
 
@@ -12,6 +13,8 @@ public class Tile {
 	private TipoLado ladoSul;
 	private TipoLado ladoOeste;
 
+	private Meeple meeplePosicionado = null;
+	
 	public Tile(String id, TipoTile tipoTile) {
 		this.id = id;
 		this.tipoTile = tipoTile;
@@ -70,6 +73,14 @@ public class Tile {
 		this.ladoOeste = ladoOeste;
 	}
 
+	public void setMeeple(Meeple meeple) {
+		meeplePosicionado = meeple;
+	}
+	
+	public Meeple getMeeple() {
+		return meeplePosicionado;
+	}
+	
 	public void girar() {
 		switch (orientacao) {
 		case NORTE:
