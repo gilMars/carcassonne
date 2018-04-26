@@ -281,9 +281,11 @@ public class TabuleiroFlexivel {
 		CelulaTabuleiro[][] tabuleiro = montarTabuleiro();
 		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < tabuleiro.length; i++) {
-				Tile tileAtual = tabuleiro[i][j].getTile();
-				if (tileAtual != null) {
-					s += verificarEstradaTile(tileAtual);
+				if (tabuleiro[i][j] != null) {
+					Tile tileAtual = tabuleiro[i][j].getTile();
+					if (tileAtual != null) {
+						s += verificarEstradaTile(tileAtual);
+					}
 				}
 
 			}
@@ -297,7 +299,7 @@ public class TabuleiroFlexivel {
 	}
 
 	private String verificarEstradaTile(Tile tile) {
-		
+
 		ArrayList<String> ladosStr = new ArrayList<String>();
 		String s = "";
 		if (tile != null) {
@@ -312,15 +314,15 @@ public class TabuleiroFlexivel {
 				ladosStr.add("O");
 			}
 			Meeple meeple = tile.getMeeple();
-			
+
 			if (meeple != null) {
 				String lado = meeple.getLado().getAbreviacao();
 				int indice = ladosStr.indexOf(lado);
 				if (indice > -1) {
-					ladosStr.set(indice,meeple.toString());
+					ladosStr.set(indice, meeple.toString());
 				}
 			}
-			s = tile.getId()+ladosStr.toString().replace('[', '(').replace(']', ')').replace(" ", "");
+			s = tile.getId() + ladosStr.toString().replace('[', '(').replace(']', ')').replace(" ", "");
 		}
 
 		return s;

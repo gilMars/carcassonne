@@ -72,6 +72,7 @@ public class Partida {
 		// proximoTile = tiles.pegar();
 		if (!verificarTileVazio(tile)) {
 			tile.reset();
+			tile.setMeeple(null);
 		}
 
 		tilesPegos.add(tile);
