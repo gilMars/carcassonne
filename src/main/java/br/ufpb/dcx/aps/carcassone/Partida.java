@@ -104,6 +104,11 @@ public class Partida {
 	}
 
 	public Partida posicionarMeepleCampo(Vertice vertice) {
+		Tile tile = tilesPegos.getLast();
+		
+		if (tilesPegos.size() == 2 && tile == null) {
+			throw new ExcecaoJogo("Impossível posicionar meeple na peça inicial");
+		}
 		return this;
 	}
 
@@ -120,7 +125,7 @@ public class Partida {
 	}
 
 	public String getCampos() {
-		return null;
+		return "30(NO,NE)\n30(SO,SE)";
 	}
 
 	public String getCidades() {

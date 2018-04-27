@@ -62,16 +62,10 @@ public class TabuleiroFlexivel {
 		if (celulaReferencia == null) {
 			throw new ExcecaoJogo("Tile não encontrada: " + tileReferencia.getId());
 		}
-
-		// CelulaTabuleiro celulaDuplicada = encontrarCelula(celulaInicial, novoTile);
-
+		
 		if (verificarTilePosicionado(novoTile)) {
 			throw new ExcecaoJogo("Não pode reposicionar tile já posicionado");
 		}
-		/*
-		 * if (celulaDuplicada != null) { throw new
-		 * ExcecaoJogo("Não pode reposicionar tile já posicionado"); }
-		 */
 
 		return celulaReferencia;
 	}
