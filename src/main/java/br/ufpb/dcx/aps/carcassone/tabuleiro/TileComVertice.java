@@ -4,15 +4,14 @@ import br.ufpb.dcx.aps.carcassone.Lado;
 
 public class TileComVertice extends Tile {
 	
-	
 	TipoLado ladoNoroeste;
 	TipoLado ladoNordeste;
 	TipoLado ladoSudeste;
 	TipoLado ladoSudoeste;
-	
-	TileComVertice(String id, TipoTile tipoTile, TipoLado ladoNoroeste, TipoLado ladoNordeste,
-	TipoLado ladoSudeste, TipoLado ladoSudoeste) {
-		super(id,tipoTile);
+
+	public TileComVertice(Tile tile, TipoLado ladoNoroeste, TipoLado ladoNordeste,
+			TipoLado ladoSudeste, TipoLado ladoSudoeste) {
+		super(tile.getId(),tile.getTipoTile());
 		this.ladoNoroeste = ladoNoroeste;
 		this.ladoNordeste = ladoNordeste;
 		this.ladoSudeste = ladoSudeste;
