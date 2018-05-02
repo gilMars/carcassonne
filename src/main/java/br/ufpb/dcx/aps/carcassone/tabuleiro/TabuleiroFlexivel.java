@@ -380,7 +380,62 @@ public class TabuleiroFlexivel {
 		return s;
 
 	}
+	
+	public String verificarCampo() {
+		if (extremoLeste == null) {
+			return "";
+		}
 
+		String s = "";
+
+		CelulaTabuleiro[][] tabuleiro = montarTabuleiro();
+
+		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
+			for (int i = 0; i < tabuleiro.length; i++) {
+				s += (tabuleiro[i][j] == null) ? espacoVazio : verificarCampoTile(tabuleiro[i][j]);
+			}
+
+			if (j > 0) {
+				s += " ";
+			}
+		}
+
+		return s;
+	}
+
+	private String verificarCampoTile(CelulaTabuleiro celula) {
+		TileComVertice tile = (TileComVertice) celula.getTile();
+		ArrayList<String> ladosStr = new ArrayList<String>();
+		String s = "";
+		if (tile != null) {
+			if (tile.getLadoNoroeste() == TipoLadoCarcassonne.CAMPO) {
+				ladosStr.add("NO");
+			}
+			if (tile.getLadoNordeste() == TipoLadoCarcassonne.CAMPO) {
+				ladosStr.add("NE");
+			} 
+			if (tile.getLadoSudeste() == TipoLadoCarcassonne.CAMPO) {
+				ladosStr.add("SE");
+			}
+			if (tile.getLadoSudoeste() == TipoLadoCarcassonne.CAMPO) {
+				ladosStr.add("SO");
+			}
+			Meeple meeple = celula.getMeeple();
+
+			if (meeple != null) {
+				String lado = meeple.getLado().getAbreviacao();
+				int indice = ladosStr.indexOf(lado);
+				if (indice > -1) {
+					ladosStr.set(indice, meeple.toString());
+				}
+			}
+			s = tile.getId() + ladosStr.toString().replace('[', '(').replace(']', ')').replace(" ", "");
+		}
+
+		return s;
+
+	}
+	
 	public boolean verificarCeculaInicial(Tile tile) {
 		System.out.println(celulaInicial.getTile().equals(tile));
 		return celulaInicial.getTile().equals(tile);

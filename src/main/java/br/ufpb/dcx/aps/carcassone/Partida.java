@@ -125,7 +125,7 @@ public class Partida {
 	}
 
 	public String getCampos() {
-		return "30(NO,NE)\n30(SO,SE)";
+		return tabuleiro.verificarCampo();
 	}
 
 	public String getCidades() {
