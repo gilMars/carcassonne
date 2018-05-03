@@ -11,7 +11,7 @@ public class Partida {
 	Jogador[] jogadores;
 	Estado estadoTurno = Estado.T_INICIO;
 	Estado estadoPartida;
-	int jogadorDaVez = 0;
+	int jogadorDaVez = 00;
 	
 	Partida(BolsaDeTiles tiles, Cor... sequencia) {
 
