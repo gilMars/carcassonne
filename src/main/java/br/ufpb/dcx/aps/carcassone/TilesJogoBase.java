@@ -69,7 +69,7 @@ public interface TilesJogoBase {
 
 	
 	Tile t01 = new TileComVertice(new Tile("01", CCCCS50), CAMPO, CAMPO, CAMPO, CAMPO);
-	Tile t02 = new TileComVertice(new Tile("02", CCFC50), CAMPO, CAMPO, CAMPO, CAMPO);
+	Tile t02 = new TileComVertice(new Tile("02", CCFC50), CIDADE, CIDADE, CIDADE, CIDADE);
 	Tile t03 = new Tile("03", CCFC50);
 	Tile t04 = new Tile("04", CCFC50);
 	Tile t05 = new Tile("05", CCFCS50);

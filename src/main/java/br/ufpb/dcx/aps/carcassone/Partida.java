@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
+import br.ufpb.dcx.aps.carcassone.tabuleiro.TileComVertice;
 
 public class Partida {
 
@@ -109,9 +110,64 @@ public class Partida {
 		if (tilesPegos.size() == 2 && tile == null) {
 			throw new ExcecaoJogo("Impossível posicionar meeple na peça inicial");
 		}
+		
+		verificarSeTemCampo(tile,vertice);
 		return this;
 	}
 
+	private void verificarSeTemCampo(Tile tile, Vertice vertice) {
+		TileComVertice t = (TileComVertice)tile;
+		switch(vertice) {
+		case NOROESTE:
+			if (t.getLadoNoroeste() != TipoLadoCarcassonne.CAMPO) {
+				throw new ExcecaoJogo("Impossível posicionar meeple em campo pois o vertice Noroeste do tile "+tile.getId()+" é totalmente ocupado por "+t.getLadoNoroeste().getAbreviacao());
+			}
+			break;
+		case NORDESTE:
+			if (t.getLadoNordeste() != TipoLadoCarcassonne.CAMPO) {
+				throw new ExcecaoJogo("Impossível posicionar meeple em campo pois o vertice Nordeste do tile "+tile.getId()+" é totalmente ocupado por "+t.getLadoNordeste().getAbreviacao());
+			}
+			break;
+		case SUDESTE:
+			if (t.getLadoSudeste() != TipoLadoCarcassonne.CAMPO) {
+				throw new ExcecaoJogo("Impossível posicionar meeple em campo pois o vertice Sudeste do tile "+tile.getId()+" é totalmente ocupado por "+t.getLadoSudeste().getAbreviacao());
+			}
+			break;
+		case SUDOESTE:
+			if (t.getLadoSudoeste() != TipoLadoCarcassonne.CAMPO) {
+				throw new ExcecaoJogo("Impossível posicionar meeple em campo pois o vertice Sudoeste do tile "+tile.getId()+" é totalmente ocupado por "+t.getLadoSudoeste().getAbreviacao());
+			}
+			
+		}
+
+	}
+	
+	private void verificarSeTemEstrada(Tile tile, Lado lado) {
+
+		switch(lado) {
+		case NORTE:
+			if (tile.getLadoNorte() != TipoLadoCarcassonne.ESTRADA) {
+				throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Norte do tile "+tile.getId()+" é "+tile.getLadoNorte().getAbreviacao());
+			}
+			break;
+		case LESTE:
+			if (tile.getLadoLeste() != TipoLadoCarcassonne.ESTRADA) {
+				throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Leste do tile "+tile.getId()+" é "+tile.getLadoLeste().getAbreviacao());
+			}
+			break;
+		case SUL:
+			if (tile.getLadoSul() != TipoLadoCarcassonne.ESTRADA) {
+				throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Sul do tile "+tile.getId()+" é "+tile.getLadoSul().getAbreviacao());
+			}
+			break;
+		case OESTE:
+			if (tile.getLadoOeste() != TipoLadoCarcassonne.ESTRADA) {
+				throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Oeste do tile "+tile.getId()+" é "+tile.getLadoOeste().getAbreviacao());
+			}
+			
+		}
+
+	}
 	public Partida posicionarMeepleCidade(Lado lado) {
 		return this;
 	}
