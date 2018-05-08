@@ -151,13 +151,6 @@ public class TabuleiroFlexivel {
 		
 	}
 	
-	private void verificarMeeplePosicionado(CelulaTabuleiro cel) {
-		Meeple me = cel.getMeeple();
-		if (me != null) {
-			throw new ExcecaoJogo("Impossível posicionar meeple pois a estrada já está ocupada pelo meeple "+me.getCor()+" no lado "+me.getLado()+" do tile "+me.getReferencia().getId());
-		}
-	}
-	
 	private void posicionarMeepleEstradaNorte(Meeple meeple) {
 		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
 		Tile tile = celulaReferencial.getTile();
@@ -168,7 +161,7 @@ public class TabuleiroFlexivel {
 		if (celulaReferencial.getMeeple() != null) {
 			System.out.println("oi");
 		}
-		verificarMeeplePosicionado(celulaReferencial);
+
 		celulaReferencial.setMeeple(meeple);
 	}
 
@@ -182,7 +175,7 @@ public class TabuleiroFlexivel {
 		if (celulaReferencial.getMeeple() != null) {
 			System.out.println("oi");
 		}
-		verificarMeeplePosicionado(celulaReferencial);
+
 		celulaReferencial.setMeeple(meeple);
 	}
 
@@ -196,7 +189,7 @@ public class TabuleiroFlexivel {
 		if (celulaReferencial.getMeeple() != null) {
 			System.out.println("oi");
 		}
-		verificarMeeplePosicionado(celulaReferencial);
+		
 		celulaReferencial.setMeeple(meeple);
 	}
 	
@@ -208,7 +201,6 @@ public class TabuleiroFlexivel {
 			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Oeste do tile "+tile.getId()+" é "+lado.getAbreviacao());
 		}
 		
-		if(celulaReferencial.getMeeple() != null) System.out.println("oi");
 		celulaReferencial.setMeeple(meeple);
 	}
 	
@@ -307,7 +299,10 @@ public class TabuleiroFlexivel {
 
 		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < tabuleiro.length; i++) {
-				s += (tabuleiro[i][j] == null) ? espacoVazio : tabuleiro[i][j].getTile().toString();
+				if (tabuleiro[i][j] != null) {
+					s += tabuleiro[i][j].getTile().toString();
+				}
+				//s += (tabuleiro[i][j] == null) ? espacoVazio : tabuleiro[i][j].getTile().toString();
 			}
 
 			if (j > 0) {

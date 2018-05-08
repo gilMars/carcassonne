@@ -21,6 +21,15 @@ public class Jogador {
 		return meeples;
 	}
 	
+	public void decMeeples() {
+		--meeples;
+	}
+	
+	public void reset() {
+		meeples = 7;
+		pontos = 0;
+	}
+	
 	@Override
 	public String toString() {
 		return corJogador+"("+pontos+","+meeples+")";
