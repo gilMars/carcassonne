@@ -101,7 +101,6 @@ public class Partida {
 		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
 		System.out.println(jogador.quantidadeMeeples());
 		jogador.decMeeples();
-		System.out.println(jogador.quantidadeMeeples());
 		Meeple meeple = new Meeple(lado, jogador.getCor(), tilesPegos.getLast());
 		tabuleiro.posicionarMeeple(meeple);
 		estadoTurno = Estado.M_P;
