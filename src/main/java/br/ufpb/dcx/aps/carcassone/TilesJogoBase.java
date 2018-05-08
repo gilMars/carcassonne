@@ -118,7 +118,7 @@ public interface TilesJogoBase {
 	Tile t48 = new Tile("48", FFFFL50);
 	Tile t49 = new Tile("49", FFRFL50);
 	Tile t50 = new Tile("50", FFRFL50);
-	Tile t51 = new Tile("51", FFRR50);
+	Tile t51 = new TileComVertice(new Tile("51", FFRR50), CAMPO, CAMPO, CAMPO, CAMPO);
 	Tile t52 = new Tile("52", FFRR50);
 	Tile t53 = new Tile("53", FFRR50);
 	Tile t54 = new Tile("54", FFRR50);

@@ -142,32 +142,7 @@ public class Partida {
 
 	}
 	
-	private void verificarSeTemEstrada(Tile tile, Lado lado) {
-
-		switch(lado) {
-		case NORTE:
-			if (tile.getLadoNorte() != TipoLadoCarcassonne.ESTRADA) {
-				throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Norte do tile "+tile.getId()+" é "+tile.getLadoNorte().getAbreviacao());
-			}
-			break;
-		case LESTE:
-			if (tile.getLadoLeste() != TipoLadoCarcassonne.ESTRADA) {
-				throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Leste do tile "+tile.getId()+" é "+tile.getLadoLeste().getAbreviacao());
-			}
-			break;
-		case SUL:
-			if (tile.getLadoSul() != TipoLadoCarcassonne.ESTRADA) {
-				throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Sul do tile "+tile.getId()+" é "+tile.getLadoSul().getAbreviacao());
-			}
-			break;
-		case OESTE:
-			if (tile.getLadoOeste() != TipoLadoCarcassonne.ESTRADA) {
-				throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Oeste do tile "+tile.getId()+" é "+tile.getLadoOeste().getAbreviacao());
-			}
-			
-		}
-
-	}
+	
 	public Partida posicionarMeepleCidade(Lado lado) {
 		return this;
 	}

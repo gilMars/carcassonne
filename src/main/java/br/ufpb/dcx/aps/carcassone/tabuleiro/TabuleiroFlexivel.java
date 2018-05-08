@@ -151,6 +151,13 @@ public class TabuleiroFlexivel {
 		
 	}
 	
+	private void verificarMeeplePosicionado(CelulaTabuleiro cel) {
+		Meeple me = cel.getMeeple();
+		if (me != null) {
+			throw new ExcecaoJogo("Impossível posicionar meeple pois a estrada já está ocupada pelo meeple "+me.getCor()+" no lado "+me.getLado()+" do tile "+me.getReferencia().getId());
+		}
+	}
+	
 	private void posicionarMeepleEstradaNorte(Meeple meeple) {
 		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
 		Tile tile = celulaReferencial.getTile();
@@ -158,7 +165,10 @@ public class TabuleiroFlexivel {
 		if (lado != TipoLadoCarcassonne.ESTRADA) {
 			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Norte do tile "+tile.getId()+" é "+lado.getAbreviacao());
 		}
-		
+		if (celulaReferencial.getMeeple() != null) {
+			System.out.println("oi");
+		}
+		verificarMeeplePosicionado(celulaReferencial);
 		celulaReferencial.setMeeple(meeple);
 	}
 
@@ -169,7 +179,10 @@ public class TabuleiroFlexivel {
 		if (lado != TipoLadoCarcassonne.ESTRADA) {
 			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Leste do tile "+tile.getId()+" é "+lado.getAbreviacao());
 		}
-		
+		if (celulaReferencial.getMeeple() != null) {
+			System.out.println("oi");
+		}
+		verificarMeeplePosicionado(celulaReferencial);
 		celulaReferencial.setMeeple(meeple);
 	}
 
@@ -180,7 +193,10 @@ public class TabuleiroFlexivel {
 		if (lado != TipoLadoCarcassonne.ESTRADA) {
 			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Sul do tile "+tile.getId()+" é "+lado.getAbreviacao());
 		}
-		
+		if (celulaReferencial.getMeeple() != null) {
+			System.out.println("oi");
+		}
+		verificarMeeplePosicionado(celulaReferencial);
 		celulaReferencial.setMeeple(meeple);
 	}
 	
@@ -192,6 +208,7 @@ public class TabuleiroFlexivel {
 			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Oeste do tile "+tile.getId()+" é "+lado.getAbreviacao());
 		}
 		
+		if(celulaReferencial.getMeeple() != null) System.out.println("oi");
 		celulaReferencial.setMeeple(meeple);
 	}
 	
@@ -332,20 +349,27 @@ public class TabuleiroFlexivel {
 		}
 
 		String s = "";
-
+		
 		CelulaTabuleiro[][] tabuleiro = montarTabuleiro();
 
+		int t = tabuleiro.length;
+		
 		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < tabuleiro.length; i++) {
-				s += (tabuleiro[i][j] == null) ? espacoVazio : verificarEstradaTile(tabuleiro[i][j]);
+				if (tabuleiro[i][j] != null) {
+					s += verificarEstradaTile(tabuleiro[i][j])+ ((i < t-1)?" ":"");
+				}
 			}
-
 			if (j > 0) {
-				s += " ";
+				s += "\n";
 			}
+	
 		}
-
+		if (s.charAt(s.length()-1) == ' ') {
+			s = s.substring(0, s.length()-1);
+		}
 		return s;
+
 	}
 
 	private String verificarEstradaTile(CelulaTabuleiro celula) {
@@ -356,15 +380,16 @@ public class TabuleiroFlexivel {
 			if (tile.getLadoNorte() == TipoLadoCarcassonne.ESTRADA) {
 				ladosStr.add("N");
 			}
-			if (tile.getLadoLeste() == TipoLadoCarcassonne.ESTRADA) {
-				ladosStr.add("L");
-			} 
-			if (tile.getLadoSul() == TipoLadoCarcassonne.ESTRADA) {
-				ladosStr.add("S");
-			}
 			if (tile.getLadoOeste() == TipoLadoCarcassonne.ESTRADA) {
 				ladosStr.add("O");
 			}
+			if (tile.getLadoSul() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("S");
+			}
+			if (tile.getLadoLeste() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("L");
+			} 
+
 			Meeple meeple = celula.getMeeple();
 
 			if (meeple != null) {
@@ -392,7 +417,7 @@ public class TabuleiroFlexivel {
 
 		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < tabuleiro.length; i++) {
-				s += (tabuleiro[i][j] == null) ? espacoVazio : verificarCampoTile(tabuleiro[i][j]);
+				s += (tabuleiro[i][j] == null) ? "" : verificarCampoTile(tabuleiro[i][j]);
 			}
 
 			if (j > 0) {
