@@ -99,7 +99,6 @@ public class Partida {
 		}
 		
 		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
-		System.out.println(jogador.quantidadeMeeples());
 		jogador.decMeeples();
 		Meeple meeple = new Meeple(lado, jogador.getCor(), tilesPegos.getLast());
 		tabuleiro.posicionarMeeple(meeple);
@@ -113,8 +112,13 @@ public class Partida {
 		if (tilesPegos.size() == 2 && tile == null) {
 			throw new ExcecaoJogo("Impossível posicionar meeple na peça inicial");
 		}
-		
 		verificarSeTemCampo(tile,vertice);
+
+		Jogador jogador = jogadores[jogadorDaVez % jogadores.length];
+		jogador.decMeeples();
+		Meeple meeple = new Meeple(vertice, jogador.getCor(), tilesPegos.getLast());
+		tabuleiro.posicionarMeeple(meeple);
+		estadoTurno = Estado.M_P;
 		return this;
 	}
 

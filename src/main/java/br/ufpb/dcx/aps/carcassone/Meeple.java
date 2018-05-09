@@ -13,6 +13,24 @@ public class Meeple {
 		this.referencia = referencia;
 	}
 	
+	public Meeple(Vertice lado, Cor jogador, Tile referencia) {
+		switch(lado) {
+		case NORDESTE:
+			this.lado = Lado.NORDESTE;
+			break;
+		case NOROESTE:
+			this.lado = Lado.NOROESTE;
+			break;
+		case SUDESTE:
+			this.lado = Lado.SUDESTE;
+			break;
+		case SUDOESTE:
+			this.lado = Lado.SUDOESTE;
+			
+		}
+		this.jogador = jogador;
+		this.referencia = referencia;
+	}	
 	public Lado getLado() {
 		return lado;
 	}

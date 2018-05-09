@@ -494,7 +494,7 @@ public class JogoTest {
 		mockarTiles(tiles, t30);
 		Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
 		
-		Assert.assertEquals("30(NO,NE)\\n30(SO,SE)", partida.getCampos());
+		Assert.assertEquals("30(NO,NE)\n30(SO,SE)", partida.getCampos());
 		
 		ocorreExcecaoJogo(() -> partida.posicionarMeepleCampo(SUDESTE),
 				"Impossível posicionar meeple na peça inicial");

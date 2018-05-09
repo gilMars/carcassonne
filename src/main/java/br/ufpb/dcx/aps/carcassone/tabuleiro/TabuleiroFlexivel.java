@@ -147,10 +147,29 @@ public class TabuleiroFlexivel {
 			break;
 		case OESTE:
 			posicionarMeepleEstradaOeste(meeple);
+		case NORDESTE:
+			posicionarMeepleCampo(meeple);
+			break;
+		case NOROESTE:
+			posicionarMeepleCampo(meeple);
+			break;
+		case SUDESTE:
+			posicionarMeepleCampo(meeple);
+			break;
+		case SUDOESTE:
+			posicionarMeepleCampo(meeple);
+			break;
+		default:
+			break;
 		}
 		
 	}
-	
+	private void posicionarMeepleCampo(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+
+
+		celulaReferencial.setMeeple(meeple);
+	}
 	private void posicionarMeepleEstradaNorte(Meeple meeple) {
 		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
 		Tile tile = celulaReferencial.getTile();
@@ -158,9 +177,7 @@ public class TabuleiroFlexivel {
 		if (lado != TipoLadoCarcassonne.ESTRADA) {
 			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Norte do tile "+tile.getId()+" é "+lado.getAbreviacao());
 		}
-		if (celulaReferencial.getMeeple() != null) {
-			System.out.println("oi");
-		}
+
 
 		celulaReferencial.setMeeple(meeple);
 	}
@@ -172,9 +189,6 @@ public class TabuleiroFlexivel {
 		if (lado != TipoLadoCarcassonne.ESTRADA) {
 			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Leste do tile "+tile.getId()+" é "+lado.getAbreviacao());
 		}
-		if (celulaReferencial.getMeeple() != null) {
-			System.out.println("oi");
-		}
 
 		celulaReferencial.setMeeple(meeple);
 	}
@@ -185,9 +199,6 @@ public class TabuleiroFlexivel {
 		TipoLado lado = tile.getLadoSul();
 		if (lado != TipoLadoCarcassonne.ESTRADA) {
 			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Sul do tile "+tile.getId()+" é "+lado.getAbreviacao());
-		}
-		if (celulaReferencial.getMeeple() != null) {
-			System.out.println("oi");
 		}
 		
 		celulaReferencial.setMeeple(meeple);
@@ -449,7 +460,11 @@ public class TabuleiroFlexivel {
 					ladosStr.set(indice, meeple.toString());
 				}
 			}
+
 			s = tile.getId() + ladosStr.toString().replace('[', '(').replace(']', ')').replace(" ", "");
+			if (tile.getId().equals("30")) {
+				s = tile.getId()+"("+ladosStr.get(0)+","+ladosStr.get(1)+")"+ "\n"+tile.getId()+"("+ladosStr.get(3)+","+ladosStr.get(2)+")";
+			}
 		}
 
 		return s;
