@@ -15,6 +15,7 @@ public class TipoTile {
 		this.ladoLeste = ladoLeste;
 		this.ladoSul = ladoSul;
 		this.ladoOeste = ladoOeste;
+		
 	}
 	
 	public TipoLado getLadoNorte() {
@@ -48,5 +49,4 @@ public class TipoTile {
 	public void setLadoOeste(TipoLado ladoOeste) {
 		this.ladoOeste = ladoOeste;
 	}
-
 }

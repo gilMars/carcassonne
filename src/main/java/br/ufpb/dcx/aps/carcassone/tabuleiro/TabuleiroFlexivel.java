@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import br.ufpb.dcx.aps.carcassone.ExcecaoJogo;
 import br.ufpb.dcx.aps.carcassone.Lado;
+import br.ufpb.dcx.aps.carcassone.Meeple;
+import br.ufpb.dcx.aps.carcassone.TipoLadoCarcassonne;
 
 public class TabuleiroFlexivel {
 
@@ -60,11 +62,9 @@ public class TabuleiroFlexivel {
 		if (celulaReferencia == null) {
 			throw new ExcecaoJogo("Tile não encontrada: " + tileReferencia.getId());
 		}
-
-		CelulaTabuleiro celulaDuplicada = encontrarCelula(celulaInicial, novoTile);
-
-		if (celulaDuplicada != null) {
-			throw new ExcecaoJogo("O tile " + novoTile.getId() + " já foi posicionado no tabuleiro");
+		
+		if (verificarTilePosicionado(novoTile)) {
+			throw new ExcecaoJogo("Não pode reposicionar tile já posicionado");
 		}
 
 		return celulaReferencia;
@@ -134,6 +134,87 @@ public class TabuleiroFlexivel {
 		}
 	}
 
+	public void posicionarMeeple(Meeple meeple) {
+		switch(meeple.getLado()) {
+		case NORTE:
+			posicionarMeepleEstradaNorte(meeple);
+			break;
+		case LESTE:
+			posicionarMeepleEstradaLeste(meeple);
+			break;
+		case SUL:
+			posicionarMeepleEstradaSul(meeple);
+			break;
+		case OESTE:
+			posicionarMeepleEstradaOeste(meeple);
+		case NORDESTE:
+			posicionarMeepleCampo(meeple);
+			break;
+		case NOROESTE:
+			posicionarMeepleCampo(meeple);
+			break;
+		case SUDESTE:
+			posicionarMeepleCampo(meeple);
+			break;
+		case SUDOESTE:
+			posicionarMeepleCampo(meeple);
+			break;
+		default:
+			break;
+		}
+		
+	}
+	private void posicionarMeepleCampo(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+
+
+		celulaReferencial.setMeeple(meeple);
+	}
+	private void posicionarMeepleEstradaNorte(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+		Tile tile = celulaReferencial.getTile();
+		TipoLado lado = tile.getLadoNorte();
+		if (lado != TipoLadoCarcassonne.ESTRADA) {
+			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Norte do tile "+tile.getId()+" é "+lado.getAbreviacao());
+		}
+
+
+		celulaReferencial.setMeeple(meeple);
+	}
+
+	private void posicionarMeepleEstradaLeste(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+		Tile tile = celulaReferencial.getTile();
+		TipoLado lado = tile.getLadoLeste();
+		if (lado != TipoLadoCarcassonne.ESTRADA) {
+			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Leste do tile "+tile.getId()+" é "+lado.getAbreviacao());
+		}
+
+		celulaReferencial.setMeeple(meeple);
+	}
+
+	private void posicionarMeepleEstradaSul(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+		Tile tile = celulaReferencial.getTile();
+		TipoLado lado = tile.getLadoSul();
+		if (lado != TipoLadoCarcassonne.ESTRADA) {
+			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Sul do tile "+tile.getId()+" é "+lado.getAbreviacao());
+		}
+		
+		celulaReferencial.setMeeple(meeple);
+	}
+	
+	private void posicionarMeepleEstradaOeste(Meeple meeple) {
+		CelulaTabuleiro celulaReferencial = encontrarCelula(celulaInicial, meeple.getReferencia());
+		Tile tile = celulaReferencial.getTile();
+		TipoLado lado = tile.getLadoOeste();
+		if (lado != TipoLadoCarcassonne.ESTRADA) {
+			throw new ExcecaoJogo("Impossível posicionar meeple em estrada pois o lado Oeste do tile "+tile.getId()+" é "+lado.getAbreviacao());
+		}
+		
+		celulaReferencial.setMeeple(meeple);
+	}
+	
 	private void celulaOcupada(CelulaTabuleiro celulaReferencia, CelulaTabuleiro[][] tabuleiro, int x, int y,
 			String posicao) {
 
@@ -169,6 +250,14 @@ public class TabuleiroFlexivel {
 	private CelulaTabuleiro encontrarCelula(CelulaTabuleiro celulaAtual, Tile tileReferencia) {
 		ArrayList<CelulaTabuleiro> celulasVisitadas = new ArrayList<>();
 		return encontrarCelulaInterno(celulaAtual, tileReferencia, null, celulasVisitadas);
+	}
+
+	public boolean verificarTilePosicionado(Tile tile) {
+		CelulaTabuleiro celulaDuplicada = encontrarCelula(celulaInicial, tile);
+		if (celulaDuplicada != null) {
+			return true;
+		}
+		return false;
 	}
 
 	private CelulaTabuleiro encontrarCelulaInterno(CelulaTabuleiro celulaAtual, Tile tileReferencia, Lado movimento,
@@ -221,7 +310,10 @@ public class TabuleiroFlexivel {
 
 		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < tabuleiro.length; i++) {
-				s += (tabuleiro[i][j] == null) ? espacoVazio : tabuleiro[i][j].getTile().toString();
+				if (tabuleiro[i][j] != null) {
+					s += tabuleiro[i][j].getTile().toString();
+				}
+				//s += (tabuleiro[i][j] == null) ? espacoVazio : tabuleiro[i][j].getTile().toString();
 			}
 
 			if (j > 0) {
@@ -256,6 +348,133 @@ public class TabuleiroFlexivel {
 		montarTabuleiro(celulaAtual.getSul(), tabuleiro, celulasVisitadas);
 		montarTabuleiro(celulaAtual.getOeste(), tabuleiro, celulasVisitadas);
 	}
+
+	public String verificarEstrada() {
+		if (extremoLeste == null) {
+			return "";
+		}
+
+		String s = "";
+		
+		CelulaTabuleiro[][] tabuleiro = montarTabuleiro();
+
+		int t = tabuleiro.length;
+		
+		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
+			for (int i = 0; i < tabuleiro.length; i++) {
+				if (tabuleiro[i][j] != null) {
+					s += verificarEstradaTile(tabuleiro[i][j])+ ((i < t-1)?" ":"");
+				}
+			}
+			if (j > 0) {
+				s += "\n";
+			}
+	
+		}
+		if (s.charAt(s.length()-1) == ' ') {
+			s = s.substring(0, s.length()-1);
+		}
+		return s;
+
+	}
+
+	private String verificarEstradaTile(CelulaTabuleiro celula) {
+		Tile tile = celula.getTile();
+		ArrayList<String> ladosStr = new ArrayList<String>();
+		String s = "";
+		if (tile != null) {
+			if (tile.getLadoNorte() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("N");
+			}
+			if (tile.getLadoOeste() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("O");
+			}
+			if (tile.getLadoSul() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("S");
+			}
+			if (tile.getLadoLeste() == TipoLadoCarcassonne.ESTRADA) {
+				ladosStr.add("L");
+			} 
+
+			Meeple meeple = celula.getMeeple();
+
+			if (meeple != null) {
+				String lado = meeple.getLado().getAbreviacao();
+				int indice = ladosStr.indexOf(lado);
+				if (indice > -1) {
+					ladosStr.set(indice, meeple.toString());
+				}
+			}
+			s = tile.getId() + ladosStr.toString().replace('[', '(').replace(']', ')').replace(" ", "");
+		}
+
+		return s;
+
+	}
+	
+	public String verificarCampo() {
+		if (extremoLeste == null) {
+			return "";
+		}
+
+		String s = "";
+
+		CelulaTabuleiro[][] tabuleiro = montarTabuleiro();
+
+		for (int j = tabuleiro[0].length - 1; j >= 0; j--) {
+			for (int i = 0; i < tabuleiro.length; i++) {
+				s += (tabuleiro[i][j] == null) ? "" : verificarCampoTile(tabuleiro[i][j]);
+			}
+
+			if (j > 0) {
+				s += " ";
+			}
+		}
+
+		return s;
+	}
+
+	private String verificarCampoTile(CelulaTabuleiro celula) {
+		TileComVertice tile = (TileComVertice) celula.getTile();
+		ArrayList<String> ladosStr = new ArrayList<String>();
+		String s = "";
+		if (tile != null) {
+			if (tile.getLadoNoroeste() == TipoLadoCarcassonne.CAMPO) {
+				ladosStr.add("NO");
+			}
+			if (tile.getLadoNordeste() == TipoLadoCarcassonne.CAMPO) {
+				ladosStr.add("NE");
+			} 
+			if (tile.getLadoSudeste() == TipoLadoCarcassonne.CAMPO) {
+				ladosStr.add("SE");
+			}
+			if (tile.getLadoSudoeste() == TipoLadoCarcassonne.CAMPO) {
+				ladosStr.add("SO");
+			}
+			Meeple meeple = celula.getMeeple();
+
+			if (meeple != null) {
+				String lado = meeple.getLado().getAbreviacao();
+				int indice = ladosStr.indexOf(lado);
+				if (indice > -1) {
+					ladosStr.set(indice, meeple.toString());
+				}
+			}
+
+			s = tile.getId() + ladosStr.toString().replace('[', '(').replace(']', ')').replace(" ", "");
+			if (tile.getId().equals("30")) {
+				s = tile.getId()+"("+ladosStr.get(0)+","+ladosStr.get(1)+")"+ "\n"+tile.getId()+"("+ladosStr.get(3)+","+ladosStr.get(2)+")";
+			}
+		}
+
+		return s;
+
+	}
+	
+	public boolean verificarCeculaInicial(Tile tile) {
+		System.out.println(celulaInicial.getTile().equals(tile));
+		return celulaInicial.getTile().equals(tile);
+	}
 }
 
 class CelulaTabuleiro {
@@ -263,7 +482,8 @@ class CelulaTabuleiro {
 	private Tile tile;
 	private CelulaTabuleiro norte, sul, leste, oeste;
 	private int x, y;
-
+	private Meeple meeplePosicionado = null;
+	
 	public static CelulaTabuleiro celulaVazia(int x, int y) {
 		return new CelulaTabuleiro(null, x, y);
 	}
@@ -282,6 +502,14 @@ class CelulaTabuleiro {
 		this.tile = tile;
 	}
 
+	public Meeple getMeeple() {
+		return meeplePosicionado;
+	}
+	
+	public void setMeeple(Meeple meeple) {
+		meeplePosicionado = meeple;
+	}
+	
 	public CelulaTabuleiro getNorte() {
 		return norte;
 	}

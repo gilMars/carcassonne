@@ -1,6 +1,7 @@
 package br.ufpb.dcx.aps.carcassone;
 
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
+import br.ufpb.dcx.aps.carcassone.tabuleiro.TileComVertice;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TipoTile;
 
 /**
@@ -66,8 +67,9 @@ public interface TilesJogoBase {
 	TipoTile RFRF50 = new TipoTileCarcassonne(BASE, ESTRADA, CAMPO, ESTRADA, CAMPO, SEM_ESCUDO, SEM_MOSTEIRO, SEM_CIDADES);
 	TipoTile RRRR50 = new TipoTileCarcassonne(BASE, ESTRADA, ESTRADA, ESTRADA, ESTRADA, SEM_ESCUDO, SEM_MOSTEIRO, SEM_CIDADES);
 
-	Tile t01 = new Tile("01", CCCCS50);
-	Tile t02 = new Tile("02", CCFC50);
+	
+	Tile t01 = new TileComVertice(new Tile("01", CCCCS50), CAMPO, CAMPO, CAMPO, CAMPO);
+	Tile t02 = new TileComVertice(new Tile("02", CCFC50), CIDADE, CIDADE, CAMPO, CAMPO);
 	Tile t03 = new Tile("03", CCFC50);
 	Tile t04 = new Tile("04", CCFC50);
 	Tile t05 = new Tile("05", CCFCS50);
@@ -94,8 +96,8 @@ public interface TilesJogoBase {
 	Tile t26 = new Tile("26", CFRR50);
 	Tile t27 = new Tile("27", CRFR50);
 	Tile t28 = new Tile("28", CRFR50);
-	Tile t29 = new Tile("29", CRFR50);
-	Tile t30 = new Tile("30", CRFR50); // Initial
+	Tile t29 = new TileComVertice(new Tile("29", CRFR50), CAMPO, CAMPO, CAMPO, CAMPO);
+	Tile t30 = new TileComVertice(new Tile("30", CRFR50), CAMPO, CAMPO, CAMPO, CAMPO); // Initial
 	Tile t31 = new Tile("31", CRRC50);
 	Tile t32 = new Tile("32", CRRC50);
 	Tile t33 = new Tile("33", CRRC50);
@@ -116,7 +118,7 @@ public interface TilesJogoBase {
 	Tile t48 = new Tile("48", FFFFL50);
 	Tile t49 = new Tile("49", FFRFL50);
 	Tile t50 = new Tile("50", FFRFL50);
-	Tile t51 = new Tile("51", FFRR50);
+	Tile t51 = new TileComVertice(new Tile("51", FFRR50), CAMPO, CAMPO, CAMPO, CAMPO);
 	Tile t52 = new Tile("52", FFRR50);
 	Tile t53 = new Tile("53", FFRR50);
 	Tile t54 = new Tile("54", FFRR50);
@@ -129,7 +131,7 @@ public interface TilesJogoBase {
 	Tile t61 = new Tile("61", FRRR50);
 	Tile t62 = new Tile("62", FRRR50);
 	Tile t63 = new Tile("63", FRRR50);
-	Tile t64 = new Tile("64", RFRF50);
+	Tile t64 = new TileComVertice(new Tile("64", RFRF50), CAMPO, CAMPO, CAMPO, CAMPO);
 	Tile t65 = new Tile("65", RFRF50);
 	Tile t66 = new Tile("66", RFRF50);
 	Tile t67 = new Tile("67", RFRF50);

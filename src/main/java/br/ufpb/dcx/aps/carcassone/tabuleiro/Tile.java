@@ -1,5 +1,8 @@
 package br.ufpb.dcx.aps.carcassone.tabuleiro;
 
+import java.util.Arrays;
+import java.util.List;
+
 import br.ufpb.dcx.aps.carcassone.Lado;
 
 public class Tile {
@@ -11,7 +14,7 @@ public class Tile {
 	private TipoLado ladoLeste;
 	private TipoLado ladoSul;
 	private TipoLado ladoOeste;
-
+	
 	public Tile(String id, TipoTile tipoTile) {
 		this.id = id;
 		this.tipoTile = tipoTile;
@@ -22,6 +25,9 @@ public class Tile {
 		setLadoNorte(tipoTile.getLadoNorte());
 	}
 
+	public List<TipoLado> getLados() {
+		return Arrays.asList(ladoNorte, ladoLeste, ladoSul, ladoOeste);
+	}
 	public String getId() {
 		return id;
 	}
@@ -34,7 +40,7 @@ public class Tile {
 		return tipoTile;
 	}
 
-	Lado getOrientacao() {
+	public Lado getOrientacao() {
 		return orientacao;
 	}
 
@@ -69,7 +75,7 @@ public class Tile {
 	private void setLadoOeste(TipoLado ladoOeste) {
 		this.ladoOeste = ladoOeste;
 	}
-
+	
 	public void girar() {
 		switch (orientacao) {
 		case NORTE:
@@ -91,8 +97,9 @@ public class Tile {
 		ladoOeste = ladoSul;
 		ladoSul = ladoLeste;
 		ladoLeste = temp;
+		
 	}
-
+	
 	public void reset() {
 		while (orientacao != Lado.NORTE) {
 			girar();
