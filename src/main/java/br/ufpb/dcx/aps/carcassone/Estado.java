@@ -2,7 +2,7 @@ package br.ufpb.dcx.aps.carcassone;
 
 public enum Estado {
 	
-	P_ANDAMENTO("Em_Andamento"), T_INICIO("Início_Turno"), P_FIM("Partida_Finalizada");
+	P_ANDAMENTO("Em_Andamento"), T_INICIO("Início_Turno"), P_FIM("Partida_Finalizada"), T_ANADMENTO("Tile_Posicionado");
 	
 	final private String nomeEstado;
 
