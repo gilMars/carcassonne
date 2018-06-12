@@ -1,13 +1,20 @@
 package br.ufpb.dcx.aps.carcassone;
 
+import java.io.Serializable;
 import java.util.LinkedList;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TileComVertice;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Partida implements Serializable{
 
-public class Partida {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4377167842010551680L;
 	private BolsaDeTiles tiles;
 	private TabuleiroFlexivel tabuleiro = new TabuleiroFlexivel("  ");
 	Jogador[] jogadores;
@@ -17,7 +24,7 @@ public class Partida {
 
 	LinkedList<Tile> tilesPegos = new LinkedList<Tile>();
 
-	Partida(BolsaDeTiles tiles, Cor... sequencia) {
+	public Partida(BolsaDeTiles tiles, Cor... sequencia) {
 
 		this.tiles = tiles;
 		pegarProximoTile();
@@ -158,6 +165,18 @@ public class Partida {
 		return this;
 	}
 
+	public Jogador[] getJogadores() {
+		return jogadores;
+	}
+	
+	public Estado getEstadoPartida() {
+		return estadoPartida;
+	}
+	
+	public Estado getEstadoTurno() {
+		return estadoTurno;
+	}
+	
 	public String getEstradas() {
 		return tabuleiro.verificarEstrada();
 	}
@@ -195,5 +214,4 @@ public class Partida {
 		}
 		return false;
 	}
-
 }
