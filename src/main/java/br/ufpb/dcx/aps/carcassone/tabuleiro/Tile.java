@@ -3,16 +3,26 @@ package br.ufpb.dcx.aps.carcassone.tabuleiro;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import br.ufpb.dcx.aps.carcassone.Lado;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Tile {
 
 	private String id;
 	private Lado orientacao;
+	
+	@JsonIgnore
 	private TipoTile tipoTile;
+	@JsonIgnore
 	private TipoLado ladoNorte;
+	@JsonIgnore
 	private TipoLado ladoLeste;
+	@JsonIgnore
 	private TipoLado ladoSul;
+	@JsonIgnore
 	private TipoLado ladoOeste;
 	
 	public Tile(String id, TipoTile tipoTile) {
@@ -25,6 +35,7 @@ public class Tile {
 		setLadoNorte(tipoTile.getLadoNorte());
 	}
 
+	@JsonIgnore
 	public List<TipoLado> getLados() {
 		return Arrays.asList(ladoNorte, ladoLeste, ladoSul, ladoOeste);
 	}

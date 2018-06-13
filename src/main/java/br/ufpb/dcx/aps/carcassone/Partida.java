@@ -1,6 +1,5 @@
 package br.ufpb.dcx.aps.carcassone;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,12 +8,8 @@ import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TileComVertice;
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Partida implements Serializable{
+public class Partida {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4377167842010551680L;
 	private BolsaDeTiles tiles;
 	private TabuleiroFlexivel tabuleiro = new TabuleiroFlexivel("  ");
 	Jogador[] jogadores;
@@ -73,6 +68,15 @@ public class Partida implements Serializable{
 		return this;
 	}
 
+	public Tile ultimoTile() {
+		return tilesPegos.getLast();
+	}
+	
+	public Jogador jogadorDaVez() {
+		return jogadores[jogadorDaVez % jogadores.length];
+		
+	}
+	
 	private void pegarProximoTile() {
 		Tile tile = tiles.pegar();
 
@@ -164,7 +168,7 @@ public class Partida implements Serializable{
 	public Partida posicionarMeepleMosteiro() {
 		return this;
 	}
-
+	
 	public Jogador[] getJogadores() {
 		return jogadores;
 	}
@@ -213,5 +217,10 @@ public class Partida implements Serializable{
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "hello";
 	}
 }
