@@ -16,12 +16,14 @@ public class Tile {
 	private String id;
 	private Lado orientacao;
 	private TipoTile tipoTile;
-	private TipoLado ladoNorte;
-	private TipoLado ladoLeste;
-	private TipoLado ladoSul;
-	private TipoLado ladoOeste;
+	@JsonIgnore private TipoLado ladoNorte;
+	@JsonIgnore private TipoLado ladoLeste;
+	@JsonIgnore private TipoLado ladoSul;
+	@JsonIgnore private TipoLado ladoOeste;
 	
-	public Tile(String id, TipoTile tipoTile) {
+	@JsonIgnore
+	//@JsonCreator
+	public Tile(@JsonProperty("id") String id, @JsonProperty("tipoTile")  TipoTile tipoTile) {
 		this.id = id;
 		this.tipoTile = tipoTile;
 		this.orientacao = Lado.NORTE;
@@ -30,43 +32,13 @@ public class Tile {
 		setLadoOeste(tipoTile.getLadoOeste());
 		setLadoNorte(tipoTile.getLadoNorte());
 	}
-
-	/*
-{
-    "id": "14",
-    "orientacao": "NORTE",
-    "tipoTile": {
-        "ladoNorte": "CIDADE",
-        "ladoLeste": "CAMPO",
-        "ladoSul": "CAMPO",
-        "ladoOeste": "CIDADE",
-        "origem": "BASE",
-        "escudo": false,
-        "mosteiro": false,
-        "cidadeContinua": false
-    },
-    "ladoNorte": "CIDADE",
-    "ladoLeste": "CAMPO",
-    "ladoSul": "CAMPO",
-    "ladoOeste": "CIDADE",
-    "lados": [
-        "CIDADE",
-        "CAMPO",
-        "CAMPO",
-        "CIDADE"
-    ]
-}
-	 */
-	@JsonCreator
-	public Tile(@JsonProperty String id, @JsonProperty TipoTile tipoTile,@JsonProperty  TipoLado ladoNorte,@JsonProperty  TipoLado ladoLeste,@JsonProperty  TipoLado ladoSul,@JsonProperty  TipoLado ladoOeste) {
-		this(id,tipoTile);
-		this.ladoNorte = ladoNorte;
-		this.ladoLeste = ladoLeste;
-		this.ladoOeste = ladoOeste;
-		this.ladoSul = ladoSul;
-		
-	}
 	
+	@JsonCreator
+	public Tile(@JsonProperty("id") String id, @JsonProperty("orientacao") Lado orientacao, @JsonProperty("tipoTile") TipoTile tipoTile) {
+		this(id,tipoTile);
+		this.orientacao = orientacao;
+	}
+
 	@JsonIgnore
 	public List<TipoLado> getLados() {
 		return Arrays.asList(ladoNorte, ladoLeste, ladoSul, ladoOeste);

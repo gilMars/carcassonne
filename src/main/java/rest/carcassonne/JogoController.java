@@ -58,7 +58,7 @@ public class JogoController {
 		return sv.pegarTile();
 	}
 	
-	@RequestMapping(value = "/tile", method = RequestMethod.PUT)
+	@RequestMapping(value = "/tile", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces =MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Tile> posicionarTile(@RequestBody Tile tile /*@RequestParam(value = "lado") Lado ladoTile*/) {
 		return new ResponseEntity<Tile>(tile, HttpStatus.OK);
 	}
