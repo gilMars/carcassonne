@@ -3,8 +3,10 @@ package br.ufpb.dcx.aps.carcassone.tabuleiro;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.ufpb.dcx.aps.carcassone.Lado;
 
@@ -13,16 +15,10 @@ public class Tile {
 
 	private String id;
 	private Lado orientacao;
-	
-	@JsonIgnore
 	private TipoTile tipoTile;
-	@JsonIgnore
 	private TipoLado ladoNorte;
-	@JsonIgnore
 	private TipoLado ladoLeste;
-	@JsonIgnore
 	private TipoLado ladoSul;
-	@JsonIgnore
 	private TipoLado ladoOeste;
 	
 	public Tile(String id, TipoTile tipoTile) {
@@ -35,6 +31,42 @@ public class Tile {
 		setLadoNorte(tipoTile.getLadoNorte());
 	}
 
+	/*
+{
+    "id": "14",
+    "orientacao": "NORTE",
+    "tipoTile": {
+        "ladoNorte": "CIDADE",
+        "ladoLeste": "CAMPO",
+        "ladoSul": "CAMPO",
+        "ladoOeste": "CIDADE",
+        "origem": "BASE",
+        "escudo": false,
+        "mosteiro": false,
+        "cidadeContinua": false
+    },
+    "ladoNorte": "CIDADE",
+    "ladoLeste": "CAMPO",
+    "ladoSul": "CAMPO",
+    "ladoOeste": "CIDADE",
+    "lados": [
+        "CIDADE",
+        "CAMPO",
+        "CAMPO",
+        "CIDADE"
+    ]
+}
+	 */
+	@JsonCreator
+	public Tile(@JsonProperty String id, @JsonProperty TipoTile tipoTile,@JsonProperty  TipoLado ladoNorte,@JsonProperty  TipoLado ladoLeste,@JsonProperty  TipoLado ladoSul,@JsonProperty  TipoLado ladoOeste) {
+		this(id,tipoTile);
+		this.ladoNorte = ladoNorte;
+		this.ladoLeste = ladoLeste;
+		this.ladoOeste = ladoOeste;
+		this.ladoSul = ladoSul;
+		
+	}
+	
 	@JsonIgnore
 	public List<TipoLado> getLados() {
 		return Arrays.asList(ladoNorte, ladoLeste, ladoSul, ladoOeste);

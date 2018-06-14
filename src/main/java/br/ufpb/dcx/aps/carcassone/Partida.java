@@ -2,6 +2,7 @@ package br.ufpb.dcx.aps.carcassone;
 
 import java.util.LinkedList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
@@ -68,7 +69,8 @@ public class Partida {
 		return this;
 	}
 
-	public Tile ultimoTile() {
+	@JsonIgnore
+	public Tile getTile() {
 		return tilesPegos.getLast();
 	}
 	

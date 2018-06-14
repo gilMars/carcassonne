@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,7 @@ import br.ufpb.dcx.aps.carcassone.BolsaDeTiles;
 import br.ufpb.dcx.aps.carcassone.BolsaTileConcreta;
 import br.ufpb.dcx.aps.carcassone.Cor;
 import br.ufpb.dcx.aps.carcassone.Jogador;
+import br.ufpb.dcx.aps.carcassone.Lado;
 import br.ufpb.dcx.aps.carcassone.Partida;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 
@@ -51,6 +53,16 @@ public class JogoController {
 		return sv.girarTile();
 	}
 
+	@RequestMapping("/tile")
+	public ResponseEntity<Tile> pegarTile() {
+		return sv.pegarTile();
+	}
+	
+	@RequestMapping(value = "/tile", method = RequestMethod.PUT)
+	public @ResponseBody ResponseEntity<Tile> posicionarTile(@RequestBody Tile tile /*@RequestParam(value = "lado") Lado ladoTile*/) {
+		return new ResponseEntity<Tile>(tile, HttpStatus.OK);
+	}
+	
 	@RequestMapping("/jogador")
 	public ResponseEntity<Jogador[]> recuperarJogadores() {
 		return sv.resgatarJogadores();

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import br.ufpb.dcx.aps.carcassone.BolsaDeTiles;
 import br.ufpb.dcx.aps.carcassone.BolsaTileConcreta;
 import br.ufpb.dcx.aps.carcassone.Cor;
+import br.ufpb.dcx.aps.carcassone.Estado;
 import br.ufpb.dcx.aps.carcassone.Jogador;
 import br.ufpb.dcx.aps.carcassone.Partida;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
@@ -61,7 +62,7 @@ public class Services {
 		}
 
 		return new ResponseEntity<RelatorioTurno>(
-				new RelatorioTurno(partida.jogadorDaVez(), partida.ultimoTile(), partida.getEstadoTurno()),
+				new RelatorioTurno(partida.jogadorDaVez(), partida.getTile(), partida.getEstadoTurno()),
 				HttpStatus.OK);
 	}
 
@@ -84,12 +85,21 @@ public class Services {
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
+	public ResponseEntity<Tile> pegarTile() {
+
+		if ((partida == null) || (partida.getEstadoTurno() == Estado.T_ANDAMENTO)) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<Tile>(partida.getTile(), HttpStatus.OK);
+	}
+
 	public ResponseEntity<Tile> girarTile() {
 		if (partida == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		partida.girarTile();
-		return new ResponseEntity<>(partida.ultimoTile(),HttpStatus.OK);
+		return new ResponseEntity<>(partida.getTile(), HttpStatus.OK);
 	}
 
 }
