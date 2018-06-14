@@ -4,46 +4,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static br.ufpb.dcx.aps.carcassone.TilesJogoBase.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
-import br.ufpb.dcx.aps.carcassone.BolsaDeTiles;
-import br.ufpb.dcx.aps.carcassone.BolsaTileConcreta;
 import br.ufpb.dcx.aps.carcassone.Cor;
 import br.ufpb.dcx.aps.carcassone.Jogador;
-import br.ufpb.dcx.aps.carcassone.Lado;
-import br.ufpb.dcx.aps.carcassone.Partida;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 
+@Api(value = "partida")
 @RestController
 @RequestMapping("/partida")
 public class JogoController {
 	
 	Services sv = new Services();
 	
+	@ApiOperation(value = "Cria a partida utilizando o jogadores passados por um objeto JSON")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> criarPartida(@RequestBody Cor... sequencia){
-    	return sv.criarPartida(sequencia);
+    	//return sv.criarPartida(sequencia);
+		return new ResponseEntity<>(HttpStatus.OK);
     }
     
-	@RequestMapping("/relatorio")
+	@RequestMapping(value = "/relatorio", method = RequestMethod.GET)
 	public ResponseEntity<RelatorioPartida> relatorioPartida() {
 		return sv.relatorioPartida();
 	}
 
-	@RequestMapping("relatorio/turno")
+	@RequestMapping(value = "relatorio/turno", method = RequestMethod.GET)
 	public ResponseEntity<RelatorioTurno> relatorioTurno() {
 		return sv.relatorioTurno();
 	}
@@ -53,7 +46,7 @@ public class JogoController {
 		return sv.girarTile();
 	}
 
-	@RequestMapping("/tile")
+	@RequestMapping(value = "/tile", method = RequestMethod.GET)
 	public ResponseEntity<Tile> pegarTile() {
 		return sv.pegarTile();
 	}
@@ -63,7 +56,7 @@ public class JogoController {
 		return new ResponseEntity<Tile>(tile, HttpStatus.OK);
 	}
 	
-	@RequestMapping("/jogador")
+	@RequestMapping(value = "/jogador", method = RequestMethod.GET)
 	public ResponseEntity<Jogador[]> recuperarJogadores() {
 		return sv.resgatarJogadores();
 	}
