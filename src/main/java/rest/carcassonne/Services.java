@@ -9,7 +9,9 @@ import br.ufpb.dcx.aps.carcassone.BolsaTileConcreta;
 import br.ufpb.dcx.aps.carcassone.Cor;
 import br.ufpb.dcx.aps.carcassone.Estado;
 import br.ufpb.dcx.aps.carcassone.Jogador;
+import br.ufpb.dcx.aps.carcassone.Lado;
 import br.ufpb.dcx.aps.carcassone.Partida;
+import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 
 public class Services {
@@ -102,4 +104,15 @@ public class Services {
 		return new ResponseEntity<>(partida.getTile(), HttpStatus.OK);
 	}
 
+	public ResponseEntity<?> posicionarTile(Tile tileRef, Lado ladoRef) {
+		partida.posicionarTile(tileRef, ladoRef);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	public ResponseEntity<TabuleiroFlexivel> getTabuleiro() {
+		if (partida == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<TabuleiroFlexivel>(partida.getTabuleiro(), HttpStatus.OK);
+	}
 }

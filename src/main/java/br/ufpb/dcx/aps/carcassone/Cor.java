@@ -1,7 +1,9 @@
 package br.ufpb.dcx.aps.carcassone;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.wordnik.swagger.annotations.ApiModel;
+
+import io.swagger.annotations.ApiModel;
+
 @ApiModel
 public enum Cor {
 	PRETO("PRETO"), VERMELHO("VERMELHO"), AZUL("AZUL"), AMARELO("AMARELO"), VERDE("VERDE");

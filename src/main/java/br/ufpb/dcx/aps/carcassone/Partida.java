@@ -199,6 +199,10 @@ public class Partida {
 		return null;
 	}
 
+	public TabuleiroFlexivel getTabuleiro() {
+		return tabuleiro;
+	}
+	
 	public String relatorioTabuleiro() {
 		return tabuleiro.toString();
 	}
